@@ -4,11 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.CellEditor;
 
 import dao.IMemberDao;
 import exception.DaoException;
@@ -46,23 +43,6 @@ public class MemberDao implements IMemberDao {
             }
 
             System.out.println("List of members: " + members);
-
-            try {
-				result.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			try {
-				preparedStatement.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			try {
-				connection.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
         } catch (SQLException e) {
             throw new DaoException("Error while uploading list of members from the database", e);
         }
@@ -70,17 +50,25 @@ public class MemberDao implements IMemberDao {
         return members;
     };
 
+    /**
+     * The function to set id of wanted member in the "select member by id query" 
+     * 
+     * @param preparedStatement
+     * @param id
+     * @return
+     * @throws SQLException
+     */
+    public ResultSet prepareGetByIdStatement(PreparedStatement preparedStatement, int id) throws SQLException {
+        preparedStatement.setInt(1, id);
+        return preparedStatement.executeQuery();
+    }
+
 	public Member getById(int id) throws DaoException {
         Member member = new Member();
-        ResultSet result = null;
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
         
-        try {
-            connection = EstablishConnection.getConnection();
-            preparedStatement = connection.prepareStatement(SELECT_MEMBER_BY_ID_QUERY);
-            preparedStatement.setInt(1, id);
-            result = preparedStatement.executeQuery();
+        try (Connection connection = EstablishConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_MEMBER_BY_ID_QUERY);
+             ResultSet result = prepareGetByIdStatement(preparedStatement, id);) {
             
             if (result.next()) {
                 member.setId(result.getInt("id"));
@@ -93,70 +81,96 @@ public class MemberDao implements IMemberDao {
             }
         } catch (SQLException e) {
             throw new DaoException("Error while uploading a members whose id is " + id + " from the database", e);
-        } finally {
-			try {
-				result.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			try {
-				preparedStatement.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			try {
-				connection.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+        }
 
         return member;
     };
+
+    /**
+     * The function to fullfill the "create query" with appropriate data 
+     * 
+     * @param preparedStatement
+     * @param member
+     * @return
+     * @throws SQLException
+     */
+    public ResultSet prepareCreateStatement(PreparedStatement preparedStatement, Member member) throws SQLException {
+        preparedStatement.setString(1, member.getLastName());
+        preparedStatement.setString(2, member.getFirstName());
+        preparedStatement.setString(3, member.getAddress());
+        preparedStatement.setString(4, member.getEmail());
+        preparedStatement.setString(5, member.getPhoneNumber());
+        preparedStatement.setString(6, member.getSubscription().toString());
+        preparedStatement.executeUpdate();
+        return preparedStatement.getGeneratedKeys();
+    }
 
 	public int create(Member member) throws DaoException {
-        ResultSet result = null;
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
+        int id = -1;
         
-        try {
-            connection = EstablishConnection.getConnection();
-            preparedStatement = connection.prepareStatement(SELECT_MEMBER_BY_ID_QUERY);
-            preparedStatement.setInt(1, id);
-            result = preparedStatement.executeQuery();
-            
+        try (Connection connection = EstablishConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_QUERY);
+             ResultSet result = prepareCreateStatement(preparedStatement, member);) {
+
             if (result.next()) {
-                member.setId(result.getInt("id"));
-                member.setLastName(result.getString("nom"));
-                member.setFirstName(result.getString("prenom"));
-                member.setAddress(result.getString("adresse"));
-                member.setEmail(result.getString("email"));
-                member.setPhoneNumber(result.getString("telephone"));
-                member.setSubscription(Member.SubscriptionType.valueOf(result.getString("abonnement")));
+                id = result.getInt(1);
+            }
+
+            System.out.println("The new member: " + member + "was successfully created.");
+        } catch (SQLException e) {
+            throw new DaoException("Error while creating a member " + member + " in the database", e);
+        }
+
+        return id;
+    };
+
+	public void update(Member member) throws DaoException {
+        try (Connection connection = EstablishConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);) {
+            
+			preparedStatement.setString(1, member.getLastName());
+            preparedStatement.setString(2, member.getFirstName());
+            preparedStatement.setString(3, member.getAddress());
+            preparedStatement.setString(4, member.getEmail());
+            preparedStatement.setString(5, member.getPhoneNumber());
+            preparedStatement.setString(6, member.getSubscription().toString());
+			preparedStatement.setInt(7, member.getId());
+			preparedStatement.executeUpdate();
+
+			System.out.println("The member " + member + "was successfully updated.");
+        } catch (SQLException e) {
+			throw new DaoException("Error while updating a member " + member + " in the database", e);
+		}
+    };
+
+	public void delete(int id) throws DaoException {
+		try (Connection connection = EstablishConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);) {
+            
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+            
+			System.out.println("The member whose id is " + id + " was successfully deleted.");
+		} catch (SQLException e) {
+			throw new DaoException("Error while deleting a member whose id is " + id + " from the database", e);
+		}
+    };
+
+	public int count() throws DaoException {
+        int numberOfMembers = -1;
+
+        try (Connection connection = EstablishConnection.getConnection();
+			 PreparedStatement preparedStatement = connection.prepareStatement(COUNT_QUERY);
+             ResultSet result = preparedStatement.executeQuery();) {
+
+            if (result.next()) {
+                numberOfMembers = result.getInt(1);
+                System.out.println("The number of members in the database: " + numberOfMembers);
             }
         } catch (SQLException e) {
-            throw new DaoException("Error while uploading a members whose id is " + id + " from the database", e);
-        } finally {
-			try {
-				result.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			try {
-				preparedStatement.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			try {
-				connection.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
-        return member;
-    };
-	public void update(Member member) throws DaoException;
-	public void delete(int id) throws DaoException;
-	public int count() throws DaoException;   
+            throw new DaoException("Error while counting the number of members in the database", e);
+        } 
+        
+        return numberOfMembers;
+    };   
 }

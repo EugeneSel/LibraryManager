@@ -9,7 +9,6 @@ public class Member {
             this.index = index;
         };
 
-
         /**
          * returns the index
          * @return index
