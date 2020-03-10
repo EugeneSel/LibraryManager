@@ -10,7 +10,6 @@ public class Member {
         };
 
 
-
         /**
          * returns the index
          * @return index
@@ -35,11 +34,21 @@ public class Member {
     private SubscriptionType subscription;
 
     public Member() {
-        this.id = autoincrement++;
+        // this.id = autoincrement++;
     };
 
     public Member(String lastName, String firstName, String address, String email, String phoneNumber, SubscriptionType subscription) {
         this.id = autoincrement++;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.address = address;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.subscription = subscription;
+    };
+
+    public Member(int id, String lastName, String firstName, String address, String email, String phoneNumber, SubscriptionType subscription) {
+        this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;
         this.address = address;
