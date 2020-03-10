@@ -1,10 +1,30 @@
-public class IBookDao implements IBookDao {
+package dao.impl;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import dao.IBookDao;
+import exception.DaoException;
+import model.Book;
+import utils.EstablishConnection;
+
+public class BookDao implements IBookDao {
+    /**
+     * According to Singleton pattern
+     */
     public static BookDao instance;
-    private IBookDao() { }	
+
+    private BookDao() {};
+
     public static IBookDao getInstance() {
 		if(instance == null) {
-			instance = new IBookDao();
-		}
+			instance = new BookDao();
+        }
+        
 		return instance;
 	}
 
@@ -25,7 +45,7 @@ public class IBookDao implements IBookDao {
              ResultSet result = preparedStatement.executeQuery();) {
 
             while (result.next()) {
-                books.add(new Book(result.getInt("id"), result.getString("title"), result.getString("auteur"), result.getString("isbn")));
+                books.add(new Book(result.getInt("id"), result.getString("titre"), result.getString("auteur"), result.getString("isbn")));
             }
 
             System.out.println("List of books: " + books);
@@ -42,9 +62,8 @@ public class IBookDao implements IBookDao {
     }
 
     @Override
-	public Book getById(int id) throws DaoException;
-    {
-        Book book = new Book);
+	public Book getById(int id) throws DaoException {
+        Book book = new Book();
         
         try (Connection connection = EstablishConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ONE_QUERY);
@@ -73,7 +92,7 @@ public class IBookDao implements IBookDao {
     } 
 
     @Override
-	public int create(Book book) throws DaoException{
+	public int create(Book book) throws DaoException {
          int id = -1;
         
         try (Connection connection = EstablishConnection.getConnection();
@@ -91,6 +110,7 @@ public class IBookDao implements IBookDao {
 
         return id;
     };
+    
     @Override
 	public void update(Book book) throws DaoException{
         try (Connection connection = EstablishConnection.getConnection();

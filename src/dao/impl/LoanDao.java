@@ -52,7 +52,7 @@ class LoanDao implements ILoanDao {
             IBookDao bookDao = BookDao.getInstance();
 
             while (result.next()) {
-                loans.add(new Loan(result.getInt("id"), MemberDaoresult.getInt("idMembre"), result.getInt("idLivre"), result.getDate("dateEmprunt").toLocalDate(), result.getDate("dateRetour").toLocalDate()));
+                loans.add(new Loan(result.getInt("idid"), memberDao.getById(result.getInt("idMembre")), bookDao.getById(result.getInt("idLivre")), result.getDate("dateEmprunt").toLocalDate(), result.getDate("dateRetour").toLocalDate()));
             }
 
             System.out.println("List of loans: " + loans);
@@ -65,12 +65,59 @@ class LoanDao implements ILoanDao {
 
     @Override
     public List<Loan> getListCurrent() throws DaoException {
+        List<Loan> currentLoans = new ArrayList<>();
 
+        try (Connection connection = EstablishConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_CURRENT_LOANS_QUERY);
+             ResultSet result = preparedStatement.executeQuery();) {
+
+            IMemberDao memberDao = MemberDao.getInstance();
+            IBookDao bookDao = BookDao.getInstance();
+
+            while (result.next()) {
+                currentLoans.add(new Loan(result.getInt("idid"), memberDao.getById(result.getInt("idMembre")), bookDao.getById(result.getInt("idLivre")), result.getDate("dateEmprunt").toLocalDate(), result.getDate("dateRetour").toLocalDate()));
+            }
+
+            System.out.println("List of active loans: " + currentLoans);
+        } catch (SQLException e) {
+            throw new DaoException("Error while uploading list of active loans from the database", e);
+        }
+
+        return currentLoans;
     };
+
+    /**
+     * The function to set id of wanted member in the "select member by id query" 
+     * 
+     * @param preparedStatement
+     * @param id
+     * @return
+     * @throws SQLException
+     */
+    public ResultSet prepareGetListCurrentByMemberStatement(PreparedStatement preparedStatement, int idMember) throws SQLException {
+        preparedStatement.setInt(1, idMember);
+        return preparedStatement.executeQuery();
+    }
 
     @Override
 	public List<Loan> getListCurrentByMember(int idMember) throws DaoException {
+        try (Connection connection = EstablishConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_CURRENT_LOANS_QUERY);
+             ResultSet result = preparedStatement.executeQuery();) {
 
+            IMemberDao memberDao = MemberDao.getInstance();
+            IBookDao bookDao = BookDao.getInstance();
+
+            while (result.next()) {
+                currentLoans.add(new Loan(result.getInt("idid"), memberDao.getById(result.getInt("idMembre")), bookDao.getById(result.getInt("idLivre")), result.getDate("dateEmprunt").toLocalDate(), result.getDate("dateRetour").toLocalDate()));
+            }
+
+            System.out.println("List of active loans: " + currentLoans);
+        } catch (SQLException e) {
+            throw new DaoException("Error while uploading list of active loans from the database", e);
+        }
+
+        return currentLoans;
     };
 
     @Override
