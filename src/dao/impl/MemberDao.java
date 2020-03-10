@@ -69,7 +69,7 @@ public class MemberDao implements IMemberDao {
 
         return members;
     };
-
+    @Override
 	public Member getById(int id) throws DaoException {
         Member member = new Member();
         ResultSet result = null;
