@@ -49,7 +49,7 @@ class LoanDao implements ILoanDao {
              ResultSet result = preparedStatement.executeQuery();) {
 
             IMemberDao memberDao = MemberDao.getInstance();
-            BookDao bookDao
+            IBookDao bookDao = BookDao.getInstance();
 
             while (result.next()) {
                 loans.add(new Loan(result.getInt("id"), MemberDaoresult.getInt("idMembre"), result.getInt("idLivre"), result.getDate("dateEmprunt").toLocalDate(), result.getDate("dateRetour").toLocalDate()));
