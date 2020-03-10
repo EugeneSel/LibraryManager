@@ -9,7 +9,7 @@ public class Book {
     private String isbn;
 
     public Book() {
-        this.id = autoincrement++;
+        //this.id = autoincrement++;
     }
 
     public Book(String title, String author, String isbn) {
