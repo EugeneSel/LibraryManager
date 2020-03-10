@@ -13,12 +13,18 @@ import model.Member;
 import utils.EstablishConnection;
 
 public class MemberDao implements IMemberDao {
+    /**
+     * According to Singleton pattern
+     */
     private static MemberDao instance;
-	private MemberDao() { }	
+
+    private MemberDao() {};
+    	
 	public static IMemberDao getInstance() {
 		if(instance == null) {
 			instance = new MemberDao();
-		}
+        }
+        
 		return instance;
 	}
     
@@ -63,6 +69,7 @@ public class MemberDao implements IMemberDao {
         return preparedStatement.executeQuery();
     }
 
+    @Override
 	public Member getById(int id) throws DaoException {
         Member member = new Member();
         
@@ -105,6 +112,7 @@ public class MemberDao implements IMemberDao {
         return preparedStatement.getGeneratedKeys();
     }
 
+    @Override
 	public int create(Member member) throws DaoException {
         int id = -1;
         
@@ -124,6 +132,7 @@ public class MemberDao implements IMemberDao {
         return id;
     };
 
+    @Override
 	public void update(Member member) throws DaoException {
         try (Connection connection = EstablishConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);) {
@@ -143,6 +152,7 @@ public class MemberDao implements IMemberDao {
 		}
     };
 
+    @Override
 	public void delete(int id) throws DaoException {
 		try (Connection connection = EstablishConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);) {
@@ -156,6 +166,7 @@ public class MemberDao implements IMemberDao {
 		}
     };
 
+    @Override
 	public int count() throws DaoException {
         int numberOfMembers = -1;
 

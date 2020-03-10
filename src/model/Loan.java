@@ -32,6 +32,14 @@ public class Loan {
         this.returnDate = returnDate;
     }
 
+    public Loan(int id, Member member, Book book, LocalDate loanDate, LocalDate returnDate) {
+        this.id = id;
+        this.member = member;
+        this.book = book;
+        this.loanDate = loanDate;
+        this.returnDate = returnDate;
+    }
+
     public int getId() { return this.id; };
     public Member getMember() { return this.member; };
     public Book getBook() { return this.book; };
