@@ -18,137 +18,126 @@ public class IBookDao implements IBookDao {
     
     @Override
 	public List<Book> getList() throws DaoException{
-		List<Book> books = new ArrayList<Book>();
-		ResultSet res = null;
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		try {
-			connection = ConnectionManager.getConnection();
-			preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY);
-			res = preparedStatement.executeQuery();
-			while(res.next()) {
-				Book book  = new Book(res.getInt("id"), res.getString("titre"), res.getString("auteur"), res.getString("isbn"));
-				books.add(book);			//creation de la list à partir des resultats de la requete
-			}
-			System.out.println("GET: " + Books);
-		} catch (SQLException e) {
-			throw new DaoException("Problème lors de la récupération de la liste des Books", e);
-		} finally {
-			try {
-				res.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			try {
-				preparedStatement.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			try {
-				connection.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return books;
+        List<Book> books = new ArrayList<>();
 
+        try (Connection connection = EstablishConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY);
+             ResultSet result = preparedStatement.executeQuery();) {
+
+            while (result.next()) {
+                books.add(new Book(result.getInt("id"), result.getString("title"), result.getString("auteur"), result.getString("isbn")));
+            }
+
+            System.out.println("List of books: " + books);
+        } catch (SQLException e) {
+            throw new DaoException("Error while uploading list of books from the database", e);
+        }
+
+        return books;
     };
+
+    public ResultSet prepareGetByIdStatement(PreparedStatement preparedStatement, int id) throws SQLException {
+        preparedStatement.setInt(1, id);
+        return preparedStatement.executeQuery();
+    }
 
     @Override
 	public Book getById(int id) throws DaoException;
     {
-        Member book = new Book();
-        ResultSet result = null;
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
+        Book book = new Book);
         
-        try {
-            connection = EstablishConnection.getConnection();
-            preparedStatement = connection.prepareStatement(SELECT_ONE_QUERY);
-            preparedStatement.setInt(1, id);
-            result = preparedStatement.executeQuery();
+        try (Connection connection = EstablishConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ONE_QUERY);
+             ResultSet result = prepareGetByIdStatement(preparedStatement, id);) {
             
             if (result.next()) {
-                member.setId(result.getInt("id"));
-                member.setTitle(result.getString("title"));
-                member.setAuthor(result.getString("auteur"));
-                member.setIsbn(result.getString("isbn"));
+                book.setId(result.getInt("id"));
+                book.setTitle(result.getString("title"));
+                book.setAuthor(result.getString("auteur"));
+                book.setIsbn(result.getString("isbn"));
             }
         } catch (SQLException e) {
-            throw new DaoException("Error while uploading a book whose id is " + id + " from the database", e);
-        } finally {
-			try {
-				result.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			try {
-				preparedStatement.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			try {
-				connection.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+            throw new DaoException("Error while uploading a books whose id is " + id + " from the database", e);
+        }
 
         return book;
     };
+
+
+    public ResultSet prepareCreateStatement(PreparedStatement preparedStatement, Book book) throws SQLException {
+        preparedStatement.setString(1, book.getTitle());
+        preparedStatement.setString(2, book.getAuthor());
+        preparedStatement.setString(3, book.getIsbn());
+        preparedStatement.executeUpdate();
+        return preparedStatement.getGeneratedKeys();
+    } 
 
     @Override
 	public int create(Book book) throws DaoException{
-        ResultSet result = null;
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
+         int id = -1;
         
-        try {
-            connection = EstablishConnection.getConnection();
-            preparedStatement = connection.prepareStatement(CREATE_QUERY);
-            preparedStatement.setInt(1, id);
-            result = preparedStatement.executeQuery();
-            
-            if (result.next()) {
-                member.setId(result.getInt("id"));
-                member.setTitle(result.getString("title"));
-                member.setAuthor(result.getString("auteur"));
-                member.setIsbn(result.getString("isbn"));
-            }
-        } catch (SQLException e) {
-            throw new DaoException("Error while uploading a book whose id is " + id + " from the database", e);
-        } finally {
-			try {
-				result.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			try {
-				preparedStatement.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			try {
-				connection.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+        try (Connection connection = EstablishConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_QUERY);
+             ResultSet result = prepareCreateStatement(preparedStatement, book);) {
 
-        return book;
+            if (result.next()) {
+                id = result.getInt(1);
+            }
+
+            System.out.println("The new book: " + book + "was successfully created.");
+        } catch (SQLException e) {
+            throw new DaoException("Error while creating a book " + book + " in the database", e);
+        }
+
+        return id;
     };
     @Override
 	public void update(Book book) throws DaoException{
+        try (Connection connection = EstablishConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);) {
+            
+			preparedStatement.setString(1, book.getTitle());
+            preparedStatement.setString(2, book.getAuthor());
+            preparedStatement.setString(3, book.getIsbn());
+            preparedStatement.executeUpdate();
 
+			System.out.println("The book " + book + "was successfully updated.");
+        } catch (SQLException e) {
+			throw new DaoException("Error while updating a book " + book + " in the database", e);
+		}
     };
 
     @Override
 	public void delete(int id) throws DaoException{
 
+        try (Connection connection = EstablishConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);) {
+            
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+            
+			System.out.println("The book whose id is " + id + " was successfully deleted.");
+		} catch (SQLException e) {
+			throw new DaoException("Error while deleting a book whose id is " + id + " from the database", e);
+		}
     };
 
     @Override
 	public int count() throws DaoException{
+    int numberOfBooks = -1;
 
+        try (Connection connection = EstablishConnection.getConnection();
+			 PreparedStatement preparedStatement = connection.prepareStatement(COUNT_QUERY);
+             ResultSet result = preparedStatement.executeQuery();) {
+
+            if (result.next()) {
+                numberOfBooks = result.getInt(1);
+                System.out.println("The number of books in the database: " + numberOfBooks);
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Error while counting the number of books in the database", e);
+        } 
+        
+        return numberOfBooks;
     };
 }
