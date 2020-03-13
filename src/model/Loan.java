@@ -16,7 +16,7 @@ public class Loan {
         this.returnDate = null;
     }
 
-    public Loan(Member member, Book book) {
+    public Loan(final Member member, final Book book) {
         this.id = autoincrement++;
         this.member = member;
         this.book = book;
@@ -24,7 +24,7 @@ public class Loan {
         this.returnDate = null;
     }
 
-    public Loan(Member member, Book book, LocalDate loanDate, LocalDate returnDate) {
+    public Loan(final Member member, final Book book, final LocalDate loanDate, final LocalDate returnDate) {
         this.id = autoincrement++;
         this.member = member;
         this.book = book;
@@ -32,17 +32,53 @@ public class Loan {
         this.returnDate = returnDate;
     }
 
-    public int getId() { return this.id; };
-    public Member getMember() { return this.member; };
-    public Book getBook() { return this.book; };
-    public LocalDate getLoanDate() { return this.loanDate; };
-    public LocalDate getReturnDate() { return this.returnDate; };
+    public Loan( final int id, final Member member, final Book book, final LocalDate loanDate, final LocalDate returnDate) {
+        this.id = id;
+        this.member = member;
+        this.book = book;
+        this.loanDate = loanDate;
+        this.returnDate = returnDate;
+    }
 
-    public void setId(int id) { this.id = id; };
-    public void setMember(Member member) { this.member = member; };
-    public void setBook(Book book) { this.book = book; };
-    public void getLoanDate(LocalDate loanDate) { this.loanDate = loanDate; };
-    public void getReturnDate(LocalDate returnDate) { this.returnDate = returnDate; };
+    public int getId() {
+        return this.id;
+    };
+
+    public Member getMember() {
+        return this.member;
+    };
+
+    public Book getBook() {
+        return this.book;
+    };
+
+    public LocalDate getLoanDate() {
+        return this.loanDate;
+    };
+
+    public LocalDate getReturnDate() {
+        return this.returnDate;
+    };
+
+    public void setId(final int id) {
+        this.id = id;
+    };
+
+    public void setMember(final Member member) {
+        this.member = member;
+    };
+
+    public void setBook(final Book book) {
+        this.book = book;
+    };
+
+    public void getLoanDate(final LocalDate loanDate) {
+        this.loanDate = loanDate;
+    };
+
+    public void getReturnDate(final LocalDate returnDate) {
+        this.returnDate = returnDate;
+    };
 
     public String toString() {
         if (this.returnDate != null)

@@ -5,11 +5,11 @@ public class DaoException extends Exception {
 		super();
 	}
 
-	public DaoException(String message, Throwable cause) {
+	public DaoException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
-	public DaoException(String message) {
+	public DaoException(final String message) {
 		super(message);
 	}
 }
