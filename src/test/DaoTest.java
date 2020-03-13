@@ -1,63 +1,80 @@
+package test;
+
+import java.time.LocalDate;
+
+import dao.IBookDao;
+import dao.ILoanDao;
+import dao.IMemberDao;
+import dao.impl.BookDao;
+import dao.impl.LoanDao;
+import dao.impl.MemberDao;
+import exception.DaoException;
+import model.Book;
+import model.Loan;
+import model.Member;
+import model.Member.SubscriptionType;
+
 public class DaoTest {
 
-	
 	public static void main(String[] args) throws DaoException {
-		
-		//INITIALISATION OBJET EMPRUNT
-		Membre m = new Membre(50,"AraujoBelen","VictorA","ParisFrance","meemail@email.com","0145", Abonnement.PREMIUM);
-		Livre l = new Livre(11,"Araujo","Victor","elegidoisbn");
-		Emprunt emprunt = new Emprunt(7, m, l, LocalDate.of(2019, 12, 1), LocalDate.now());
-		//INITIALISATION DAO
-		EmpruntDao empruntDao = EmpruntDaoImpl.getInstance();
-		//GETLIST
-		empruntDao.getList();
-		empruntDao.getListCurrent();
-		empruntDao.getListCurrentByLivre(2);
-		empruntDao.getListCurrentByMembre(5);
-		//D'ABORD, CREATION D'UN EMPRUNT
-		empruntDao.create(4, 5, LocalDate.now());
-		//L'EMPRUNT DONNE POUR LA PREMIERE EXECUTION, ID = 7
-		//J'INTRODUIS 7 ET JE MONTRE QU'IL EXISTE, ET EN MEME TEMPS, QUE LA METHODE GETBYID FONCTIONNE BIEN
-		empruntDao.getById(7);
-		//METHODE UPDATE, AVEC LES VALEURS CONTENUES DANS L'OBJET
-		empruntDao.update(emprunt);
-		//JE REFAIS UNE RECHERCHE ET JE MONTRE QUE LA METHODE FONCTIONNE BIEN
-		empruntDao.getById(1);
-		//VERIFICATION METHODE COUNT
-		empruntDao.count();
-		
-	//*****************************************************************************************************
-		
-		//INITIALISATION OBJET LIVRE
-		Livre livre = new Livre(11,"Araujo","Victor","elegidoisbn");
-		//INITIALISATION DAO
-		LivreDao livreDao = LivreDaoImpl.getInstance();
-		//VERIFICATION DE METHODE GETBYID
-		livreDao.getById(1);
-		//VERIFICATION DE METHODE CREATE
-		livreDao.create("Victor", "Titre", "isbnelegido");
-		//VERIFICATION DE METHODE 
-		livreDao.update(livre);
-		//JE REFAIS UNE RECHERCHE POUR MONTRER QUE LA FONCTION UPDATE MARCHE BIEN
-		livreDao.getById(11);
-		//VERIFICATION DELETE
-		livreDao.delete(11);
-		//SI ON FAIT UNE RECHERCHE APRES D'AVOIR EFFACE UN LIVRE ON VA 
-		//VOIR QUE LE CHAMPS EST VIDE, ON VERIFIE DONC LE BON FONCTIONNEMENT DE LA METHODE
-		livreDao.getById(11);
-		//VERIFICATION COUNT
-		livreDao.count();
+
+		// init member
+		Member m = new Member(50, "LeonardiH", "AlessandroH", "ParisFrance", "meemail@email.com", "0145",
+				SubscriptionType.PREMIUM);
+		Book l = new Book(11, "Leonardi", "Alessandro", "elegidoisbn");
+		Loan loan = new Loan(7, m, l, LocalDate.of(2019, 12, 1), LocalDate.now());
+		// init dao 
+		ILoanDao loanDao = LoanDao.getInstance();
+		// getlist
+		loanDao.getList();
+		loanDao.getListCurrent();
+		loanDao.getListCurrentByBook(2);
+		loanDao.getListCurrentByMember(5);
+		// creation of loan
+		loanDao.create(4, 5, LocalDate.now());
+		// loan get for the first execution, ID = 7
+		// I verify if the method function well
+		loanDao.getById(7);
+		// update
+		loanDao.update(loan);
+		// Verification methode recherche by id
+		loanDao.getById(1);
+		// verify method count
+		loanDao.count();
+
+		// *****************************************************************************************************
+
+		// init object book
+		Book livre = new Book(11, "Leonardi", "Alessandro", "elegidoisbn");
+		// init dao 
+		IBookDao bookDao = BookDao.getInstance();
+		//verify method getById
+		bookDao.getById(1);
+		//verify create 
+		Book livre_2= new Book( "Leonardi", "Alessandro", "elegidoisbn");
+		bookDao.create(livre_2);
+		//verify update 
+		bookDao.update(livre);
+		//verify the recherche 
+		bookDao.getById(11);
+		//verify delate 
+		bookDao.delete(11);
+		//verify if the following execution is empty
+		bookDao.getById(11);
+		//verification of count
+		bookDao.count();
 		
 	//***********************************************************************************************************
 	
-	//INITIALISATION DAO
-		MembreDao membreDao =  MembreDaoImpl.getInstance();
-	//INITIALISATION OBJET MEMBRE
-		Membre membre = new Membre(50,"AraujoBelen","VictorA","ParisFrance","meemail@email.com","0145", Abonnement.PREMIUM);
-	//VERIFICATION GETBYID
+	//init dao
+		IMemberDao membreDao =  MemberDao.getInstance();
+	//init member object
+		Member membre = new Member (50,"LeonardiBelen","AlessandroA","ParisFrance","meemail@email.com","0145", SubscriptionType.PREMIUM);
+	//verify getById
 		membreDao.getById(1);
-	//VERIFICATION CREATE
-		membreDao.create("Belen", "Antonio", "Venezuela", "yo@email.com", "0000");
+	//verify create
+		Member membre_2 = new Member ("LeonardiBelen","AlessandroA","ParisFrance","meemail@email.com","0145", SubscriptionType.PREMIUM);
+		membreDao.create(membre_2);
 		membreDao.getById(13);
 	//membreDao.update(membre);
 	//VERIFICATION COUNT	

@@ -11,7 +11,7 @@ public class Loan {
     private LocalDate returnDate;
 
     public Loan() {
-        this.id = autoincrement++;
+        // this.id = autoincrement++;
         this.loanDate = LocalDate.now();
         this.returnDate = null;
     }

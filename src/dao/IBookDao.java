@@ -8,7 +8,7 @@ import model.Book;
 public interface IBookDao {
 	public List<Book> getList() throws DaoException;
 	public Book getById(int id) throws DaoException;
-	public int create(String title, String author, String isbn) throws DaoException;
+	public int create(Book book) throws DaoException;
 	public void update(Book book) throws DaoException;
 	public void delete(int id) throws DaoException;
 	public int count() throws DaoException;

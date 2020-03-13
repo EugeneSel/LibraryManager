@@ -13,28 +13,35 @@ import model.Member;
 import utils.EstablishConnection;
 
 public class MemberDao implements IMemberDao {
+    /**
+     * According to Singleton pattern
+     */
     private static MemberDao instance;
-	private MemberDao() { }	
+
+    private MemberDao() {};
+    	
 	public static IMemberDao getInstance() {
 		if(instance == null) {
 			instance = new MemberDao();
-		}
+        }
+        
 		return instance;
 	}
     
-    private static final String SELECT_ALL_MEMBERS_QUERY = "SELECT * FROM membre ORDER BY nom, prenom;";
-    private static final String SELECT_MEMBER_BY_ID_QUERY = "SELECT * FROM membre WHERE id=?;";
-    private static final String CREATE_QUERY = "INSERT INTO membre(nom, prenom, adresse, email, telephone, abonnement) VALUES (?, ?, ?, ?, ?, ?);";
-	private static final String UPDATE_QUERY = "UPDATE membre SET nom = ?, prenom = ?, adresse = ?, email = ?, telephone = ?, abonnement = ? WHERE id = ?";
+    private static final String SELECT_ALL_QUERY = "SELECT id, nom, prenom, adresse, email, telephone, abonnement FROM membre ORDER BY nom, prenom;";
+	private static final String SELECT_ONE_QUERY = "SELECT id, nom, prenom, adresse, email, telephone, abonnement FROM membre WHERE id=?;";
+	private static final String CREATE_QUERY = "INSERT INTO membre(nom, prenom, adresse, email, telephone, abonnement) VALUES (?, ?, ?, ?, ?, ?);";
+	private static final String UPDATE_QUERY = "UPDATE membre SET nom=?, prenom=?, adresse=?, email=?, telephone=?, abonnement=? WHERE id=?;";
 	private static final String DELETE_QUERY = "DELETE FROM membre WHERE id=?;";
-    private static final String COUNT_QUERY = "SELECT count(id) AS count FROM membre";
+	private static final String COUNT_QUERY = "SELECT COUNT(id) AS count FROM membre;";
+
 
     @Override
     public List<Member> getList() throws DaoException {
         List<Member> members = new ArrayList<>();
 
         try (Connection connection = EstablishConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_MEMBERS_QUERY);
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_QUERY);
              ResultSet result = preparedStatement.executeQuery();) {
 
             while (result.next()) {
@@ -63,11 +70,12 @@ public class MemberDao implements IMemberDao {
         return preparedStatement.executeQuery();
     }
 
+    @Override
 	public Member getById(int id) throws DaoException {
         Member member = new Member();
         
         try (Connection connection = EstablishConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_MEMBER_BY_ID_QUERY);
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ONE_QUERY);
              ResultSet result = prepareGetByIdStatement(preparedStatement, id);) {
             
             if (result.next()) {
@@ -105,6 +113,7 @@ public class MemberDao implements IMemberDao {
         return preparedStatement.getGeneratedKeys();
     }
 
+    @Override
 	public int create(Member member) throws DaoException {
         int id = -1;
         
@@ -124,6 +133,7 @@ public class MemberDao implements IMemberDao {
         return id;
     };
 
+    @Override
 	public void update(Member member) throws DaoException {
         try (Connection connection = EstablishConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);) {
@@ -143,6 +153,7 @@ public class MemberDao implements IMemberDao {
 		}
     };
 
+    @Override
 	public void delete(int id) throws DaoException {
 		try (Connection connection = EstablishConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);) {
@@ -156,6 +167,7 @@ public class MemberDao implements IMemberDao {
 		}
     };
 
+    @Override
 	public int count() throws DaoException {
         int numberOfMembers = -1;
 

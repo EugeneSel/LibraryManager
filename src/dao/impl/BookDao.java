@@ -1,23 +1,43 @@
-public class IBookDao implements IBookDao {
+package dao.impl;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import dao.IBookDao;
+import exception.DaoException;
+import model.Book;
+import utils.EstablishConnection;
+
+public class BookDao implements IBookDao {
+    /**
+     * According to Singleton pattern
+     */
     public static BookDao instance;
-    private IBookDao() { }	
+
+    private BookDao() {};
+
     public static IBookDao getInstance() {
 		if(instance == null) {
-			instance = new IBookDao();
-		}
+			instance = new BookDao();
+        }
+        
 		return instance;
 	}
 
-    private static final String SELECT_ALL_QUERY = "SELECT * FROM livre ";
-    private static final String SELECT_ONE_QUERY = "SELECT * FROM livre WHERE id=?;";
-    private static final String CREATE_QUERY = "INSERT INTO livre(title, auteur, isbn) VALUES (?, ?, ?);";
-	private static final String UPDATE_QUERY = "UPDATE livre SET title = ?, auteur = ?, isbn = ? WHERE id = ?";
+    private static final String SELECT_ALL_QUERY = "SELECT id, titre, auteur, isbn FROM livre ";
+    private static final String SELECT_ONE_QUERY = "SELECT id, titre, auteur, isbn FROM livre WHERE id=?;";
+    private static final String CREATE_QUERY = "INSERT INTO livre(titre, auteur, isbn) VALUES (?, ?, ?);";
+	private static final String UPDATE_QUERY = "UPDATE livre SET titre = ?, auteur = ?, isbn = ? WHERE id = ?";
 	private static final String DELETE_QUERY = "DELETE FROM livre WHERE id=?;";
     private static final String COUNT_QUERY = "SELECT count(id) AS count FROM livre";
     
     
     @Override
-	public List<Book> getList() throws DaoException{
+	public List<Book> getList() throws DaoException {
         List<Book> books = new ArrayList<>();
 
         try (Connection connection = EstablishConnection.getConnection();
@@ -25,7 +45,7 @@ public class IBookDao implements IBookDao {
              ResultSet result = preparedStatement.executeQuery();) {
 
             while (result.next()) {
-                books.add(new Book(result.getInt("id"), result.getString("title"), result.getString("auteur"), result.getString("isbn")));
+                books.add(new Book(result.getInt("id"), result.getString("titre"), result.getString("auteur"), result.getString("isbn")));
             }
 
             System.out.println("List of books: " + books);
@@ -36,15 +56,22 @@ public class IBookDao implements IBookDao {
         return books;
     };
 
+    /**
+     * The function to set id of wanted book in the "select book by id query" 
+     * 
+     * @param preparedStatement
+     * @param id
+     * @return
+     * @throws SQLException
+     */
     public ResultSet prepareGetByIdStatement(PreparedStatement preparedStatement, int id) throws SQLException {
         preparedStatement.setInt(1, id);
         return preparedStatement.executeQuery();
     }
 
     @Override
-	public Book getById(int id) throws DaoException;
-    {
-        Book book = new Book);
+	public Book getById(int id) throws DaoException {
+        Book book = new Book();
         
         try (Connection connection = EstablishConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ONE_QUERY);
@@ -63,7 +90,14 @@ public class IBookDao implements IBookDao {
         return book;
     };
 
-
+    /**
+     * The function to fullfill the "create query" with appropriate data 
+     * 
+     * @param preparedStatement
+     * @param book
+     * @return
+     * @throws SQLException
+     */
     public ResultSet prepareCreateStatement(PreparedStatement preparedStatement, Book book) throws SQLException {
         preparedStatement.setString(1, book.getTitle());
         preparedStatement.setString(2, book.getAuthor());
@@ -73,7 +107,7 @@ public class IBookDao implements IBookDao {
     } 
 
     @Override
-	public int create(Book book) throws DaoException{
+	public int create(Book book) throws DaoException {
          int id = -1;
         
         try (Connection connection = EstablishConnection.getConnection();
@@ -91,8 +125,9 @@ public class IBookDao implements IBookDao {
 
         return id;
     };
+    
     @Override
-	public void update(Book book) throws DaoException{
+	public void update(Book book) throws DaoException {
         try (Connection connection = EstablishConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);) {
             
@@ -108,7 +143,7 @@ public class IBookDao implements IBookDao {
     };
 
     @Override
-	public void delete(int id) throws DaoException{
+	public void delete(int id) throws DaoException {
 
         try (Connection connection = EstablishConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);) {
@@ -123,7 +158,7 @@ public class IBookDao implements IBookDao {
     };
 
     @Override
-	public int count() throws DaoException{
+	public int count() throws DaoException {
     int numberOfBooks = -1;
 
         try (Connection connection = EstablishConnection.getConnection();
