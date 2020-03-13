@@ -1,6 +1,7 @@
 package dao.impl;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,8 +36,8 @@ class LoanDao implements ILoanDao {
     private static final String SELECT_CURRENT_LOANS_BY_MEMBER_ID_QUERY = "SELECT * FROM emprunt WHERE idMembre = ? AND dateRetour IS NOT NULL ORDER BY dateEmprunt;";
     private static final String SELECT_CURRENT_LOANS_BY_BOOK_ID_QUERY = "SELECT * FROM emprunt WHERE idLivre = ? AND dateRetour IS NOT NULL ORDER BY dateEmprunt;";
     private static final String SELECT_LOAN_BY_ID_QUERY = "SELECT * FROM emprunt WHERE id = ?;";
-    private static final String CREATE_QUERY = "INSERT INTO emprunt(nom, prenom, adresse, email, telephone, abonnement) VALUES (?, ?, ?, ?, ?, ?);";
-	private static final String UPDATE_QUERY = "UPDATE emprunt SET nom = ?, prenom = ?, adresse = ?, email = ?, telephone = ?, abonnement = ? WHERE id = ?";
+    private static final String CREATE_QUERY = "INSERT INTO emprunt(idMembre, idLivre, dateEmprunt, dateRetour) VALUES (?, ?, ?, ?);";
+	private static final String UPDATE_QUERY = "UPDATE emprunt SET idMembre = ?, idLivre = ?, dateEmprunt = ?, dateRetour = ? WHERE id = ?";
 	// private static final String DELETE_QUERY = "DELETE FROM emprunt WHERE id=?;";
     private static final String COUNT_QUERY = "SELECT count(id) AS count FROM emprunt";
     
@@ -52,7 +53,7 @@ class LoanDao implements ILoanDao {
             IBookDao bookDao = BookDao.getInstance();
 
             while (result.next()) {
-                loans.add(new Loan(result.getInt("idid"), memberDao.getById(result.getInt("idMembre")), bookDao.getById(result.getInt("idLivre")), result.getDate("dateEmprunt").toLocalDate(), result.getDate("dateRetour").toLocalDate()));
+                loans.add(new Loan(result.getInt("id"), memberDao.getById(result.getInt("idMembre")), bookDao.getById(result.getInt("idLivre")), result.getDate("dateEmprunt").toLocalDate(), result.getDate("dateRetour").toLocalDate()));
             }
 
             System.out.println("List of loans: " + loans);
@@ -75,7 +76,7 @@ class LoanDao implements ILoanDao {
             IBookDao bookDao = BookDao.getInstance();
 
             while (result.next()) {
-                currentLoans.add(new Loan(result.getInt("idid"), memberDao.getById(result.getInt("idMembre")), bookDao.getById(result.getInt("idLivre")), result.getDate("dateEmprunt").toLocalDate(), result.getDate("dateRetour").toLocalDate()));
+                currentLoans.add(new Loan(result.getInt("id"), memberDao.getById(result.getInt("idMembre")), bookDao.getById(result.getInt("idLivre")), result.getDate("dateEmprunt").toLocalDate(), result.getDate("dateRetour").toLocalDate()));
             }
 
             System.out.println("List of active loans: " + currentLoans);
@@ -87,10 +88,10 @@ class LoanDao implements ILoanDao {
     };
 
     /**
-     * The function to set id of wanted member in the "select member by id query" 
+     * The function to set id of wanted member in the "select current loans by member id query" 
      * 
      * @param preparedStatement
-     * @param id
+     * @param idMember
      * @return
      * @throws SQLException
      */
@@ -101,47 +102,173 @@ class LoanDao implements ILoanDao {
 
     @Override
 	public List<Loan> getListCurrentByMember(int idMember) throws DaoException {
+        List<Loan> currentMemberLoans = new ArrayList<>();
+        
         try (Connection connection = EstablishConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_CURRENT_LOANS_QUERY);
-             ResultSet result = preparedStatement.executeQuery();) {
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_CURRENT_LOANS_BY_MEMBER_ID_QUERY);
+             ResultSet result = prepareGetListCurrentByMemberStatement(preparedStatement, idMember);) {
 
             IMemberDao memberDao = MemberDao.getInstance();
             IBookDao bookDao = BookDao.getInstance();
 
             while (result.next()) {
-                currentLoans.add(new Loan(result.getInt("idid"), memberDao.getById(result.getInt("idMembre")), bookDao.getById(result.getInt("idLivre")), result.getDate("dateEmprunt").toLocalDate(), result.getDate("dateRetour").toLocalDate()));
+                currentMemberLoans.add(new Loan(result.getInt("id"), memberDao.getById(result.getInt("idMembre")), bookDao.getById(result.getInt("idLivre")), result.getDate("dateEmprunt").toLocalDate(), result.getDate("dateRetour").toLocalDate()));
             }
 
-            System.out.println("List of active loans: " + currentLoans);
+            System.out.println("List of active loans of the member whose id is " + idMember + ": " + currentMemberLoans);
         } catch (SQLException e) {
             throw new DaoException("Error while uploading list of active loans from the database", e);
         }
 
-        return currentLoans;
+        return currentMemberLoans;
     };
+
+    /**
+     * The function to set id of wanted book in the "select current loans by book id query" 
+     * 
+     * @param preparedStatement
+     * @param idBook
+     * @return
+     * @throws SQLException
+     */
+    public ResultSet prepareGetListCurrentByBookStatement(PreparedStatement preparedStatement, int idBook) throws SQLException {
+        preparedStatement.setInt(1, idBook);
+        return preparedStatement.executeQuery();
+    }
 
     @Override
 	public List<Loan> getListCurrentByBook(int idBook) throws DaoException {
+        List<Loan> currentBookLoans = new ArrayList<>();
+        
+        try (Connection connection = EstablishConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_CURRENT_LOANS_BY_BOOK_ID_QUERY);
+             ResultSet result = prepareGetListCurrentByBookStatement(preparedStatement, idBook);) {
 
+            IMemberDao memberDao = MemberDao.getInstance();
+            IBookDao bookDao = BookDao.getInstance();
+
+            while (result.next()) {
+                currentBookLoans.add(new Loan(result.getInt("id"), memberDao.getById(result.getInt("idMembre")), bookDao.getById(result.getInt("idLivre")), result.getDate("dateEmprunt").toLocalDate(), result.getDate("dateRetour").toLocalDate()));
+            }
+
+            System.out.println("List of active loans of the Book which id is " + idBook + ": " + currentBookLoans);
+        } catch (SQLException e) {
+            throw new DaoException("Error while uploading list of active loans from the database", e);
+        }
+
+        return currentBookLoans;
     };
+
+    /**
+     * The function to set id of wanted loan in the "select loan by id query" 
+     * 
+     * @param preparedStatement
+     * @param id
+     * @return
+     * @throws SQLException
+     */
+    public ResultSet prepareGetByIdStatement(PreparedStatement preparedStatement, int id) throws SQLException {
+        preparedStatement.setInt(1, id);
+        return preparedStatement.executeQuery();
+    }
 
     @Override
 	public Loan getById(int id) throws DaoException {
+        Loan currentLoan = new Loan();
+        
+        try (Connection connection = EstablishConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_LOAN_BY_ID_QUERY);
+             ResultSet result = prepareGetListCurrentByBookStatement(preparedStatement, id);) {
 
+            IMemberDao memberDao = MemberDao.getInstance();
+            IBookDao bookDao = BookDao.getInstance();
+
+            if (result.next()) {
+                currentLoan = new Loan(result.getInt("id"), memberDao.getById(result.getInt("idMembre")), bookDao.getById(result.getInt("idLivre")), result.getDate("dateEmprunt").toLocalDate(), result.getDate("dateRetour").toLocalDate());
+            }
+
+            System.out.println("A loan which id is " + id + ": " + currentLoan);
+        } catch (SQLException e) {
+            throw new DaoException("Error while uploading list of active loans from the database", e);
+        }
+
+        return currentLoan;
     };
 
+    /**
+     * The function to fullfill the "create query" with appropriate data
+     * 
+     * @param preparedStatement
+     * @param idMember
+     * @param idBook
+     * @param loanDate
+     * @return
+     * @throws SQLException
+     */
+    public ResultSet prepareCreateStatement(PreparedStatement preparedStatement, int idMember, int idBook, LocalDate loanDate) throws SQLException {
+        preparedStatement.setInt(1, idMember);
+        preparedStatement.setInt(2, idBook);
+        preparedStatement.setDate(3, Date.valueOf(loanDate));
+        preparedStatement.setDate(4, null);
+        preparedStatement.executeUpdate();
+        return preparedStatement.getGeneratedKeys();
+    }
+    
     @Override
 	public void create(int idMember, int idBook, LocalDate loanDate) throws DaoException {
+        Loan loan = new Loan();
+        
+        try (Connection connection = EstablishConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_QUERY);
+             ResultSet result = prepareCreateStatement(preparedStatement, idMember, idBook, loanDate);) {
 
+            if (result.next()) {
+                IMemberDao memberDao = MemberDao.getInstance();
+                IBookDao bookDao = BookDao.getInstance();
+        
+                loan = new Loan(memberDao.getById(idMember), bookDao.getById(idBook), loanDate);
+            }
+
+            System.out.println("The new loan: " + loan + "was successfully created.");
+        } catch (SQLException e) {
+            throw new DaoException("Error while creating a loan " + loan + " in the database", e);
+        }
     };
 
     @Override
-	public void update(Loan Loan) throws DaoException {
+	public void update(Loan loan) throws DaoException {
+        try (Connection connection = EstablishConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);) {
+            
+			preparedStatement.setInt(1, loan.getMember().getId());
+            preparedStatement.setInt(2, loan.getBook().getId());
+            preparedStatement.setDate(3, Date.valueOf(loan.getLoanDate()));
+            preparedStatement.setDate(4, Date.valueOf(loan.getReturnDate()));
+			preparedStatement.setInt(5, loan.getId());
+			preparedStatement.executeUpdate();
 
+			System.out.println("The loan " + loan + "was successfully updated.");
+        } catch (SQLException e) {
+			throw new DaoException("Error while updating a loan " + loan + " in the database", e);
+		}
     };
 
     @Override
 	public int count() throws DaoException {
+        int numberOfLoans = -1;
 
+        try (Connection connection = EstablishConnection.getConnection();
+			 PreparedStatement preparedStatement = connection.prepareStatement(COUNT_QUERY);
+             ResultSet result = preparedStatement.executeQuery();) {
+
+            if (result.next()) {
+                numberOfLoans = result.getInt(1);
+                System.out.println("The number of loans in the database: " + numberOfLoans);
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Error while counting the number of loans in the database", e);
+        } 
+        
+        return numberOfLoans;
     };
 }

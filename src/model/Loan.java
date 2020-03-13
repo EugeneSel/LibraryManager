@@ -11,21 +11,29 @@ public class Loan {
     private LocalDate returnDate;
 
     public Loan() {
-        this.id = autoincrement++;
+        // this.id = autoincrement++;
         this.loanDate = LocalDate.now();
         this.returnDate = null;
     }
 
     public Loan(Member member, Book book) {
-        this.id = autoincrement++;
+        // this.id = autoincrement++;
         this.member = member;
         this.book = book;
         this.loanDate = LocalDate.now();
         this.returnDate = null;
     }
 
+    public Loan(Member member, Book book, LocalDate loanDate) {
+        // this.id = autoincrement++;
+        this.member = member;
+        this.book = book;
+        this.loanDate = loanDate;
+        this.returnDate = null;
+    }
+
     public Loan(Member member, Book book, LocalDate loanDate, LocalDate returnDate) {
-        this.id = autoincrement++;
+        // this.id = autoincrement++;
         this.member = member;
         this.book = book;
         this.loanDate = loanDate;
