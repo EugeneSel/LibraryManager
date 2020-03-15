@@ -19,10 +19,12 @@ public class Member {
          * sets the index to the given value
          * @param index index to change to
          */
-        public void setIndex(int index) { this.index = index; };
+        public void setIndex(int index) { this.index = index; }
+
+		
     }
 
-    private static int autoincrement = 0;
+    //private static int autoincrement = 0;
 
     private int id;
     private String lastName;

@@ -97,10 +97,10 @@ public class DaoTest {
 		System.out.println("\n");
 		membreDao.update(membre);
 		System.out.println("\n");
-	//VERIFICATION COUNT	
+	//Verify count	
 		membreDao.count();
 		System.out.println("\n");
-	//VERIFICATION GETLIST
+	//verify getList
 		membreDao.getList();
 		System.out.println("\n");
 	
