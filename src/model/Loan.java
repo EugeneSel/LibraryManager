@@ -17,7 +17,7 @@ public class Loan {
     }
 
     public Loan(final Member member, final Book book) {
-        this.id = autoincrement++;
+        // this.id = autoincrement++;
         this.member = member;
         this.book = book;
         this.loanDate = LocalDate.now();
@@ -25,7 +25,7 @@ public class Loan {
     }
 
     public Loan(final Member member, final Book book, final LocalDate loanDate, final LocalDate returnDate) {
-        this.id = autoincrement++;
+        // this.id = autoincrement++;
         this.member = member;
         this.book = book;
         this.loanDate = loanDate;

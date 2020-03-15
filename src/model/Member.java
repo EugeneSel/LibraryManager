@@ -37,7 +37,7 @@ public class Member {
     };
 
     public Member(String lastName, String firstName, String address, String email, String phoneNumber, SubscriptionType subscription) {
-        this.id = autoincrement++;
+        // this.id = autoincrement++;
         this.lastName = lastName;
         this.firstName = firstName;
         this.address = address;

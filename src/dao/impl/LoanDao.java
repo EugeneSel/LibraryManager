@@ -40,9 +40,6 @@ public class LoanDao implements ILoanDao {
 	private static final String UPDATE_QUERY = "UPDATE Emprunt SET idMembre=?, idLivre=?,dateEmprunt=?, dateRetour=? WHERE id=?;";
 	private static final String COUNT_QUERY = "SELECT COUNT(id) AS count FROM emprunt;";
 
-
-
-    
     @Override
     public List<Loan> getList() throws DaoException {
         List<Loan> loans = new ArrayList<>();
@@ -55,7 +52,7 @@ public class LoanDao implements ILoanDao {
             IBookDao bookDao = BookDao.getInstance();
 
             while (result.next()) {
-                loans.add(new Loan(result.getInt("id"), memberDao.getById(result.getInt("idMembre")), bookDao.getById(result.getInt("idLivre")), result.getDate("dateEmprunt").toLocalDate(), result.getDate("dateRetour").toLocalDate()));
+                loans.add(new Loan(result.getInt("id"), memberDao.getById(result.getInt("idMembre")), bookDao.getById(result.getInt("idLivre")), result.getDate("dateEmprunt").toLocalDate(), result.getDate("dateRetour") == null ? null : result.getDate("dateRetour").toLocalDate()));
             }
 
             System.out.println("List of loans: " + loans);
@@ -78,7 +75,7 @@ public class LoanDao implements ILoanDao {
             IBookDao bookDao = BookDao.getInstance();
 
             while (result.next()) {
-                currentLoans.add(new Loan(result.getInt("id"), memberDao.getById(result.getInt("idMembre")), bookDao.getById(result.getInt("idLivre")), result.getDate("dateEmprunt").toLocalDate(), result.getDate("dateRetour").toLocalDate()));
+                currentLoans.add(new Loan(result.getInt("id"), memberDao.getById(result.getInt("idMembre")), bookDao.getById(result.getInt("idLivre")), result.getDate("dateEmprunt").toLocalDate(), null));
             }
 
             System.out.println("List of active loans: " + currentLoans);
@@ -114,7 +111,7 @@ public class LoanDao implements ILoanDao {
             IBookDao bookDao = BookDao.getInstance();
 
             while (result.next()) {
-                currentMemberLoans.add(new Loan(result.getInt("id"), memberDao.getById(result.getInt("idMembre")), bookDao.getById(result.getInt("idLivre")), result.getDate("dateEmprunt").toLocalDate(), result.getDate("dateRetour").toLocalDate()));
+                currentMemberLoans.add(new Loan(result.getInt("id"), memberDao.getById(result.getInt("idMembre")), bookDao.getById(result.getInt("idLivre")), result.getDate("dateEmprunt").toLocalDate(), result.getDate("dateRetour") == null ? null : result.getDate("dateRetour").toLocalDate()));
             }
 
             System.out.println("List of active loans of the member whose id is " + idMember + ": " + currentMemberLoans);
@@ -150,7 +147,7 @@ public class LoanDao implements ILoanDao {
             IBookDao bookDao = BookDao.getInstance();
 
             while (result.next()) {
-                currentBookLoans.add(new Loan(result.getInt("id"), memberDao.getById(result.getInt("idMembre")), bookDao.getById(result.getInt("idLivre")), result.getDate("dateEmprunt").toLocalDate(), result.getDate("dateRetour").toLocalDate()));
+                currentBookLoans.add(new Loan(result.getInt("id"), memberDao.getById(result.getInt("idMembre")), bookDao.getById(result.getInt("idLivre")), result.getDate("dateEmprunt").toLocalDate(), result.getDate("dateRetour") == null ? null : result.getDate("dateRetour").toLocalDate()));
             }
 
             System.out.println("List of active loans of the Book which id is " + idBook + ": " + currentBookLoans);
@@ -186,10 +183,10 @@ public class LoanDao implements ILoanDao {
             IBookDao bookDao = BookDao.getInstance();
 
             if (result.next()) {
-                currentLoan = new Loan(result.getInt("id"), memberDao.getById(result.getInt("idMembre")), bookDao.getById(result.getInt("idLivre")), result.getDate("dateEmprunt").toLocalDate(), result.getDate("dateRetour").toLocalDate());
+                currentLoan = new Loan(result.getInt("id"), memberDao.getById(result.getInt("idMembre")), bookDao.getById(result.getInt("idLivre")), result.getDate("dateEmprunt").toLocalDate(), result.getDate("dateRetour") == null ? null : result.getDate("dateRetour").toLocalDate());
+                
+                System.out.println("A loan which id is " + id + ": " + currentLoan);
             }
-
-            System.out.println("A loan which id is " + id + ": " + currentLoan);
         } catch (SQLException e) {
             throw new DaoException("Error while uploading list of active loans from the database", e);
         }
@@ -228,10 +225,9 @@ public class LoanDao implements ILoanDao {
                 IMemberDao memberDao = MemberDao.getInstance();
                 IBookDao bookDao = BookDao.getInstance();
         
-                loan = new Loan( memberDao.getById(idMember), bookDao.getById(idBook), loanDate, null);
+                loan = new Loan(result.getInt("id"), memberDao.getById(idMember), bookDao.getById(idBook), loanDate, null);
+                System.out.println("The new loan: " + loan + "was successfully created.");
             }
-
-            System.out.println("The new loan: " + loan + "was successfully created.");
         } catch (SQLException e) {
             throw new DaoException("Error while creating a loan " + loan + " in the database", e);
         }
@@ -249,7 +245,7 @@ public class LoanDao implements ILoanDao {
 			preparedStatement.setInt(5, loan.getId());
 			preparedStatement.executeUpdate();
 
-			System.out.println("The loan " + loan + "was successfully updated.");
+			System.out.println("The loan " + loan + " was successfully updated.");
         } catch (SQLException e) {
 			throw new DaoException("Error while updating a loan " + loan + " in the database", e);
 		}

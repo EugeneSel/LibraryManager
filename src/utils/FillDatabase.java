@@ -10,8 +10,6 @@ import java.util.List;
 import org.h2.tools.DeleteDbFiles;
 
 public class FillDatabase {
-
-
     public static void main(String[] args) throws Exception {
         try {
             DeleteDbFiles.execute("~", "libraryManagerDatabase", true);

@@ -79,7 +79,7 @@ public class BookDao implements IBookDao {
             
             if (result.next()) {
                 book.setId(result.getInt("id"));
-                book.setTitle(result.getString("title"));
+                book.setTitle(result.getString("titre"));
                 book.setAuthor(result.getString("auteur"));
                 book.setIsbn(result.getString("isbn"));
             }
@@ -118,7 +118,7 @@ public class BookDao implements IBookDao {
                 id = result.getInt(1);
             }
 
-            System.out.println("The new book: " + book + "was successfully created.");
+            System.out.println("The new book: " + book + " was successfully created.");
         } catch (SQLException e) {
             throw new DaoException("Error while creating a book " + book + " in the database", e);
         }
@@ -134,11 +134,12 @@ public class BookDao implements IBookDao {
 			preparedStatement.setString(1, book.getTitle());
             preparedStatement.setString(2, book.getAuthor());
             preparedStatement.setString(3, book.getIsbn());
+            preparedStatement.setInt(4, book.getId());
             preparedStatement.executeUpdate();
 
-			System.out.println("The book " + book + "was successfully updated.");
+			System.out.println("The book " + book + " was successfully updated.");
         } catch (SQLException e) {
-			throw new DaoException("Error while updating a book " + book + " in the database", e);
+			throw new DaoException("Error while updating a book " + book + "in the database", e);
 		}
     };
 

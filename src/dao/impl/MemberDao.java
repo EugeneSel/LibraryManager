@@ -125,7 +125,7 @@ public class MemberDao implements IMemberDao {
                 id = result.getInt(1);
             }
 
-            System.out.println("The new member: " + member + "was successfully created.");
+            System.out.println("The new member: " + member + " was successfully created.");
         } catch (SQLException e) {
             throw new DaoException("Error while creating a member " + member + " in the database", e);
         }
@@ -147,7 +147,7 @@ public class MemberDao implements IMemberDao {
 			preparedStatement.setInt(7, member.getId());
 			preparedStatement.executeUpdate();
 
-			System.out.println("The member " + member + "was successfully updated.");
+			System.out.println("The member " + member + " was successfully updated.");
         } catch (SQLException e) {
 			throw new DaoException("Error while updating a member " + member + " in the database", e);
 		}
@@ -177,6 +177,7 @@ public class MemberDao implements IMemberDao {
 
             if (result.next()) {
                 numberOfMembers = result.getInt(1);
+                
                 System.out.println("The number of members in the database: " + numberOfMembers);
             }
         } catch (SQLException e) {

@@ -12,7 +12,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.4.0</version>
         <configuration>
-            <mainClass>test.ModelTest</mainClass>
+            <mainClass>test.DaoTest</mainClass>
         </configuration>
       </plugin>
       <plugin>

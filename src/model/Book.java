@@ -13,7 +13,7 @@ public class Book {
     }
 
     public Book(final String title, final String author, final String isbn) {
-        this.id = autoincrement++;
+        // this.id = autoincrement++;
         this.title = title;
         this.author = author;
         this.isbn = isbn;
