@@ -1,7 +1,7 @@
 package model;
 
 public class Book {
-    private static int autoincrement = 0;
+    //private static int autoincrement = 0;
 
     private int id;
     private String title;

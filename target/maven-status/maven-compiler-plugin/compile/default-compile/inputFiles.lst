@@ -1,2 +1,15 @@
-/media/eugene/Work/JavaProjects/LibraryManager/src/com/excilys/librarymanager/persistence/ConnectionManager.java
-/media/eugene/Work/JavaProjects/LibraryManager/src/com/excilys/librarymanager/utils/FillDatabase.java
+/Users/alessaalessandrondro/Desktop/LibraryManager/src/exception/DaoException.java
+/Users/alessaalessandrondro/Desktop/LibraryManager/src/dao/impl/BookDao.java
+/Users/alessaalessandrondro/Desktop/LibraryManager/src/dao/IBookDao.java
+/Users/alessaalessandrondro/Desktop/LibraryManager/src/dao/ILoanDao.java
+/Users/alessaalessandrondro/Desktop/LibraryManager/src/dao/impl/MemberDao.java
+/Users/alessaalessandrondro/Desktop/LibraryManager/src/utils/EstablishConnection.java
+/Users/alessaalessandrondro/Desktop/LibraryManager/src/exception/ServiceException.java
+/Users/alessaalessandrondro/Desktop/LibraryManager/src/test/ModelTest.java
+/Users/alessaalessandrondro/Desktop/LibraryManager/src/model/Loan.java
+/Users/alessaalessandrondro/Desktop/LibraryManager/src/model/Book.java
+/Users/alessaalessandrondro/Desktop/LibraryManager/src/test/DaoTest.java
+/Users/alessaalessandrondro/Desktop/LibraryManager/src/model/Member.java
+/Users/alessaalessandrondro/Desktop/LibraryManager/src/dao/impl/LoanDao.java
+/Users/alessaalessandrondro/Desktop/LibraryManager/src/dao/IMemberDao.java
+/Users/alessaalessandrondro/Desktop/LibraryManager/src/utils/FillDatabase.java
