@@ -16,15 +16,15 @@ import model.Member.SubscriptionType;
 
 public class DaoTest {
 
-	public static void main(String[] args) throws DaoException {
+	public static void main(final String[] args) throws DaoException {
 
 		// init member
-		Member m = new Member(50, "LeonardiH", "AlessandroH", "ParisFrance", "meemail@email.com", "0145",
+		final Member m = new Member(50, "LeonardiH", "AlessandroH", "ParisFrance", "meemail@email.com", "0145",
 				SubscriptionType.PREMIUM);
-		Book l = new Book(11, "Leonardi", "Alessandro", "elegidoisbn");
-		Loan loan = new Loan(7, m, l, LocalDate.of(2019, 12, 1), LocalDate.now());
-		// init dao 
-		ILoanDao loanDao = LoanDao.getInstance();
+		final Book l = new Book(11, "Leonardi", "Alessandro", "elegidoisbn");
+		final Loan loan = new Loan(7, m, l, LocalDate.of(2019, 12, 1), LocalDate.now());
+		// init dao
+		final ILoanDao loanDao = LoanDao.getInstance();
 		// getlist
 		loanDao.getList();
 		loanDao.getListCurrent();
@@ -45,35 +45,37 @@ public class DaoTest {
 		// *****************************************************************************************************
 
 		// init object book
-		Book livre = new Book(11, "Leonardi", "Alessandro", "elegidoisbn");
-		// init dao 
-		IBookDao bookDao = BookDao.getInstance();
-		//verify method getById
+		final Book livre = new Book(11, "Leonardi", "Alessandro", "elegidoisbn");
+		// init dao
+		final IBookDao bookDao = BookDao.getInstance();
+		// verify method getById
 		bookDao.getById(1);
-		//verify create 
-		Book livre_2= new Book( "Leonardi", "Alessandro", "elegidoisbn");
+		// verify create
+		final Book livre_2 = new Book("Leonardi", "Alessandro", "elegidoisbn");
 		bookDao.create(livre_2);
-		//verify update 
+		// verify update
 		bookDao.update(livre);
-		//verify the recherche 
+		// verify the recherche
 		bookDao.getById(11);
-		//verify delate 
+		// verify delate
 		bookDao.delete(11);
-		//verify if the following execution is empty
+		// verify if the following execution is empty
 		bookDao.getById(11);
-		//verification of count
+		// verification of count
 		bookDao.count();
-		
-	//***********************************************************************************************************
-	
-	//init dao
-		IMemberDao membreDao =  MemberDao.getInstance();
-	//init member object
-		Member membre = new Member (50,"LeonardiBelen","AlessandroA","ParisFrance","meemail@email.com","0145", SubscriptionType.PREMIUM);
-	//verify getById
+
+		// ***********************************************************************************************************
+
+		// init dao
+		final IMemberDao membreDao = MemberDao.getInstance();
+		// init member object
+		final Member membre = new Member(50, "LeonardiBelen", "AlessandroA", "ParisFrance", "meemail@email.com", "0145",
+				SubscriptionType.PREMIUM);
+		// verify getById
 		membreDao.getById(1);
-	//verify create
-		Member membre_2 = new Member ("LeonardiBelen","AlessandroA","ParisFrance","meemail@email.com","0145", SubscriptionType.PREMIUM);
+		// verify create
+		final Member membre_2 = new Member("LeonardiBelen", "AlessandroA", "ParisFrance", "meemail@email.com", "0145",
+				SubscriptionType.PREMIUM);
 		membreDao.create(membre_2);
 		membreDao.getById(13);
 	//membreDao.update(membre);

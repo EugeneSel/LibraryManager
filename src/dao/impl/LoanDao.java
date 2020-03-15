@@ -88,6 +88,7 @@ public class LoanDao implements ILoanDao {
 
         return currentLoans;
     };
+    //
 
     /**
      * The function to set id of wanted member in the "select current loans by member id query" 
