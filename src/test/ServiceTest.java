@@ -22,13 +22,13 @@ public class ServiceTest {
 		Member m = new Member(50, "LeonardiH", "AlessandroH", "ParisFrance", "meemail@email.com", "0145",
 				SubscriptionType.PREMIUM);
 		Book l = new Book(11, "Leonardi", "Alessandro", "elegidoisbn");
-		//INITIALISATION OBJET MEMBRE
-		Loan emprunt = new Loan(7, m, l, LocalDate.of(2019, 12, 1), LocalDate.now());
+		//init obj member
+		Loan emprunt = new Loan(7, m, l, LocalDate.of(2020, 12, 1), LocalDate.now());
 				
-		//INITIALISATION SERVICE
+		//init service
 		LoanService empruntService = LoanServiceImpl.getInstance();
 		
-		//GETLIST
+		//getlist
 		empruntService.getList();
 		System.out.println("\n\n\n\n");
 		empruntService.getListCurrent();
@@ -47,7 +47,7 @@ public class ServiceTest {
 		//ReturnBook
 	    empruntService.returnBook(1);
 		
-		//VERIFICATION METHODE COUNT
+		//verify count
 	    empruntService.count();
 		
 		//Disponibilit livre
@@ -71,16 +71,16 @@ public class ServiceTest {
 	    livreservice.getList();
 	    livreservice.getListDispo();
 	    livreservice.getById(13);
-	    Book livre = new Book(12,"Araujo","Victor","elegidoisbn2");	
-        //VERIFICATION DE METHODE CREATE
+	    Book livre = new Book(12,"Leonardi","Alessandro","elegidoisbn2");	
+        //verify method create
         Book livre_2= new Book("Ale","Titre","isbnelegido2");
 	    livreservice.create(livre_2);
 		
-		//VERIFICATION DE METHODE 
+		//verify method update
 	
 	    livreservice.update(livre);
 		
-		//DELETE
+		//Delete
 	    livreservice.delete(16);
 		
 		//Count
