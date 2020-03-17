@@ -40,7 +40,7 @@
         <div class="col l4 s6">
           <div class="small-box bg-aqua">
             <div class="inner">
-              <h3><%= numberOfMembers %></h3> <!-- TODO : afficher le nombre de membres � la place de 12 -->
+              <h3><%= numberOfMembers %></h3>
               <p>Membres</p>
             </div>
             <div class="icon">
@@ -52,7 +52,7 @@
         <div class="col l4 s6">
           <div class="small-box bg-green">
             <div class="inner">
-              <h3><%= numberOfBooks %></h3> <!-- TODO : afficher le nombre de livres � la place de 27 -->
+              <h3><%= numberOfBooks %></h3>
               <p>Livres</p>
             </div>
             <div class="icon">
@@ -64,7 +64,7 @@
         <div class="col l4 s6">
           <div class="small-box bg-yellow">
             <div class="inner">
-              <h3><%= numberOfLoans %></h3> <!-- TODO : afficher le nombre d'emprunts � la place de 1515 -->
+              <h3><%= numberOfLoans %></h3>
               <p>Emprunts</p>
             </div>
             <div class="icon">

@@ -21,7 +21,6 @@ public class BookService implements IBookService {
 	
 	@Override
 	public List<Book> getList() throws ServiceException {
-		// TODO Auto-generated method stub
 		IBookDao livreDao = BookDao.getInstance();
 		List<Book> livres = new ArrayList<>();		
 		try {
@@ -34,7 +33,6 @@ public class BookService implements IBookService {
 
 	@Override
 	public List<Book> getListDispo() throws ServiceException {
-		// TODO Auto-generated method stub
 		IBookDao livreDao = BookDao.getInstance();
         List<Book>    livres = new ArrayList<>();	
 		List<Book> livresDispo = new ArrayList<>();
@@ -55,7 +53,6 @@ public class BookService implements IBookService {
 
 	@Override
 	public Book getById(int id) throws ServiceException {
-		// TODO Auto-generated method stub
 		IBookDao livreDao = BookDao.getInstance();
 		Book livre = new Book();
 		try {
@@ -68,20 +65,20 @@ public class BookService implements IBookService {
 
 	@Override
 	public int create(Book livre) throws ServiceException {
-		// TODO Auto-generated method stub
 		IBookDao livreDao = BookDao.getInstance();
-		int i =-1;
+		int i = -1;
+		
 		try {
 			i = livreDao.create(livre);
 		}  catch (DaoException e1) {
 			System.out.println(e1.getMessage());			
-		} 
+		}
+
 		return i;
 	}
 
 	@Override
 	public void update(Book livre) throws ServiceException {
-		// TODO Auto-generated method stub
 		IBookDao livreDao = BookDao.getInstance();
 		try {
 			livreDao.update(livre);
@@ -92,7 +89,6 @@ public class BookService implements IBookService {
 
 	@Override
 	public void delete(int id) throws ServiceException {
-		// TODO Auto-generated method stub
 		IBookDao livreDao = BookDao.getInstance();
 		try {
 			livreDao.delete(id);
@@ -103,7 +99,6 @@ public class BookService implements IBookService {
 
 	@Override
 	public int count() throws ServiceException {
-		// TODO Auto-generated method stub
 		IBookDao livreDao = BookDao.getInstance();
 		int i = -1;
 

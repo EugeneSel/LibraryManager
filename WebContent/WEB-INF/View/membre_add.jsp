@@ -1,4 +1,8 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+  pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,9 +25,9 @@
       </div>
       <div class="row">
       <div class="container">
-      <h5>Création d'un nouveau membre</h5>
+      <h5>Crï¿½ation d'un nouveau membre</h5>
         <div class="row">
-	      <form action="/LibraryManager/membre_add" method="post" class="col s12">
+	      <form action="membre_add" method="post" class="col s12">
 	        <div class="row">
 	          <div class="input-field col s6">
 	            <input id="nom" type="text" name="nom">
@@ -31,7 +35,7 @@
 	          </div>
 	          <div class="input-field col s6">
 	            <input id="prenom" type="text" name="prenom">
-	            <label for="prenom">Prénom</label>
+	            <label for="prenom">Prï¿½nom</label>
 	          </div>
 	        </div>
 	        <div class="row">
@@ -47,7 +51,7 @@
 	          </div>
 	          <div class="input-field col s6">
 	            <input id="telephone" type="tel" name="telephone">
-	            <label for="telephone">Téléphone</label>
+	            <label for="telephone">Tï¿½lï¿½phone</label>
 	          </div>
 	        </div>
 	        <div class="row center">

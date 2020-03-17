@@ -1,4 +1,14 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="java.util.List" %>
+<%@ page import="model.Book" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+  pageEncoding="UTF-8"%>
+
+<%! private List<Book> bookList = new ArrayList<>();%>
+<% bookList = (List) request.getAttribute("bookList"); %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,19 +31,38 @@
       </div>
       <div class="row">
       <div class="container">
-      <h5>Suppression du livre n°42</h5> <!-- TODO : afficher l'id du livre au lieu de 42 -->
+      <h5>Suppression de livre</h5>
         <div class="row">
-          <p>Êtes-vous sûr de vouloir supprimer le livre TitreDuLivre de NomDeLAuteur (code isbnDuLivre) ?</p> <!-- TODO : compléter les trois informations ci-contre -->
-	      <form action="/LibraryManager/livre_delete" method="post" class="col s12">
-            <input type="hidden" value="idDuLivre" name="id"> <!-- TODO : remplacer idDuLivre par l'id du livre -->
-	        <div class="row center">
-	          <button class="btn waves-effect waves-light red" type="submit">Supprimer
-	            <i class="material-icons right">delete</i>
-	          </button>
-	          <a class="btn waves-effect waves-light orange" href="/LibraryManager/livre_details?id=idDuLivre">Annuler</a> <!-- TODO : remplacer idDuLivre par l'id du livre -->
-	        </div>
-	      </form>
-	    </div>	    
+          <form action="livre_delete" method="post" class="col s12">
+            <div class="row">
+              <div class="input-field col s12">
+                <select id="id" name="id" class="browser-default">
+                  <% if (request.getAttribute("id") != null && !bookList.isEmpty()) {
+                    for (Book book : bookList) {
+                      if (book.getId() == (int) request.getAttribute("id")) { %>
+                        <option value='<%= book.getId() %>' selected>"<%= book.getTitle() %>", de <%= book.getAuthor() %></option>
+                      <% }
+                    }
+                  } else { %>
+                    <option value="" default disabled selected>---</option>
+                  <% }
+
+                  if (!bookList.isEmpty()) {
+                    for (Book book : bookList) {
+                      if (request.getAttribute("id") == null || book.getId() != (int) request.getAttribute("id")) { %>
+                        <option value='<%= book.getId() %>'>"<%= book.getTitle() %>", de <%= book.getAuthor() %></option>
+                      <% }
+                    }
+                  } %>
+                </select>
+              </div>
+            </div>
+            <div class="row center">
+              <button class="btn waves-effect waves-light" type="submit">Supprimer le livre</button>
+              <button class="btn waves-effect waves-light orange" type="reset">Annuler</button>
+            </div>
+          </form>
+	      </div>	    
       </div>
       </div>
     </section>

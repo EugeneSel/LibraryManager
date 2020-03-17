@@ -1,4 +1,14 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="java.util.List" %>
+<%@ page import="model.Member" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+  pageEncoding="UTF-8"%>
+
+<%! private List<Member> memberList = new ArrayList<>();%>
+<% memberList = (List) request.getAttribute("memberList"); %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,25 +35,27 @@
             <thead>
               <tr>
                 <th>Nom</th>
-                <th>Prénom</th>
+                <th>Prï¿½nom</th>
                 <th class="hide-on-small-only">Adresse</th>
                 <th class="hide-on-small-only">E-mail</th>
-                <th class="hide-on-small-only">Téléphone</th>
-                <th>Détails</th>
+                <th class="hide-on-small-only">Tï¿½lï¿½phone</th>
+                <th>Dï¿½tails</th>
               </tr>
             </thead>
+
             <tbody>
-
-              <tr>
-                <td>Nom du membre</td>
-                <td>Prénom du membre</td>
-                <td class="hide-on-small-only">Adresse du membre</td>
-                <td class="hide-on-small-only">E-mail du membre</td>
-                <td class="hide-on-small-only">Téléphone du membre</td>
-                <td class="center"><a href="membre_details?id=idDuMembre"><ion-icon class="details" name="information-circle-outline"></ion-icon></a></td>
-              </tr>
-
-              <!-- TODO : parcourir la liste des membres et les afficher selon la structure d'exemple ci-dessus -->
+              <% if (!memberList.isEmpty()) {
+                for (Member member : memberList) { %>
+                  <tr>
+                    <td><%= member.getLastName() %></td>
+                    <td><%= member.getFirstName() %></td>
+                    <td><%= member.getAddress() %></td>
+                    <td><%= member.getEmail() %></td>
+                    <td><%= member.getPhoneNumber() %></td>
+                    <td class="center"><a href='membre_details?id=<%= member.getId() %>'><ion-icon class="details" name="information-circle-outline"></ion-icon></a></td>
+                  </tr>
+                <% }
+              } %>
             </tbody>
           </table>
         </div>

@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,7 @@ public class LoanDao implements ILoanDao {
 	private static final String SELECT_ONE_QUERY = "SELECT e.id AS idEmprunt, idMembre, nom, prenom, adresse, email, telephone, abonnement, idLivre, titre, auteur, isbn, dateEmprunt, dateRetour FROM emprunt AS e INNER JOIN membre ON membre.id = e.idMembre INNER JOIN livre ON livre.id = e.idLivre WHERE e.id = ?;";
 	private static final String CREATE_QUERY = "INSERT INTO Emprunt (idMembre, idLivre, dateEmprunt, dateRetour) VALUES (?, ?, ?, ?);";
 	private static final String UPDATE_QUERY = "UPDATE Emprunt SET idMembre=?, idLivre=?,dateEmprunt=?, dateRetour=? WHERE id=?;";
-	private static final String COUNT_QUERY = "SELECT COUNT(id) AS count FROM emprunt;";
+	private static final String COUNT_QUERY = "SELECT COUNT(*) AS count FROM emprunt;";
 
     @Override
     public List<Loan> getList() throws DaoException {
@@ -218,7 +219,7 @@ public class LoanDao implements ILoanDao {
         Loan loan = new Loan();
         
         try (Connection connection = EstablishConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_QUERY);
+             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_QUERY, Statement.RETURN_GENERATED_KEYS);
              ResultSet result = prepareCreateStatement(preparedStatement, idMember, idBook, loanDate);) {
 
             if (result.next()) {

@@ -1,4 +1,14 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="java.util.List" %>
+<%@ page import="model.Member" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+  pageEncoding="UTF-8"%>
+
+<%! private List<Member> memberList = new ArrayList<>();%>
+<% memberList = (List) request.getAttribute("memberList"); %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,18 +31,38 @@
       </div>
       <div class="row">
       <div class="container">
-      <h5>Suppression du membre n∞312</h5> <!-- TODO : remplacer 312 par l'id du membre -->
+      <h5>Suppression de membre</h5>
         <div class="row">
-          <p> tes-vous s˚r de vouloir supprimer la fiche de prenomDuMembre nomDuMembre ?</p> <!-- TODO : remplacer prenomDuMembre et nomDuMembre par les valeurs correspondantes -->
-	      <form action="/LibraryManager/membre_delete" method="post" class="col s12">
-            <input type="hidden" value="idDuMembre" name="id"> <!-- TODO : remplacer idDuMembre par l'id du membre -->
-	        <div class="row center">
-	          <button class="btn waves-effect waves-light red" type="submit" name="action">Supprimer
-	            <i class="material-icons right">delete</i>
-	          </button>
-	          <a class="btn waves-effect waves-light orange" href="/LibraryManager/membre_details?id=idDuMembre">Annuler</a> <!-- TODO : remplacer idDuMembre par l'id du membre -->
-	        </div>
-	      </form>
+          <form action="membre_delete" method="post" class="col s12">
+            <div class="row">
+              <div class="input-field col s12">
+                <select id="id" name="id" class="browser-default">
+                  <% if (request.getAttribute("id") != null && !memberList.isEmpty()) {
+                    for (Member member : memberList) {
+                      if (member.getId() == (int) request.getAttribute("id")) { %>
+                        <option value='<%= member.getId() %>' selected><%= member.getFirstName() %> <%= member.getLastName() %>, adresse: <%= member.getAddress() %>, email: <%= member.getEmail() %>, t√©l√©phone: <%= member.getPhoneNumber() %></option>
+                      <% }
+                    }
+                  } else { %>
+                    <option value="" default disabled selected>---</option>
+                  <% }
+
+                  if (!memberList.isEmpty()) {
+                    for (Member member : memberList) { 
+                      if (request.getAttribute("id") == null || member.getId() != (int) request.getAttribute("id")) { %>
+                        <option value='<%= member.getId() %>'><%= member.getFirstName() %> <%= member.getLastName() %>, adresse: <%= member.getAddress() %>, email: <%= member.getEmail() %>, t√©l√©phone: <%= member.getPhoneNumber() %></option>
+                      <% }
+                    }
+                  } %>
+                </select>
+              </div>
+            </div>
+            <div class="row center">
+              <button class="btn waves-effect waves-light" type="submit">Supprimer le membre</button>
+              <button class="btn waves-effect waves-light orange" type="reset">Annuler</button>
+            </div>
+          </form>
+	      </div>
 	    </div>	    
       </div>
       </div>

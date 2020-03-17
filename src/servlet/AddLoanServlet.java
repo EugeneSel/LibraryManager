@@ -1,32 +1,15 @@
 package servlet;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
-import javax.servlet.AsyncContext;
-import javax.servlet.DispatcherType;
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpUpgradeHandler;
-import javax.servlet.http.Part;
 
 import exception.ServiceException;
 import service.IBookService;
@@ -36,6 +19,7 @@ import service.impl.BookService;
 import service.impl.LoanService;
 import service.impl.MemberService;
 import model.Book;
+import model.Loan;
 import model.Member;
 
 public class AddLoanServlet extends HttpServlet {
@@ -87,11 +71,16 @@ public class AddLoanServlet extends HttpServlet {
 			else {
 				loanService.create(Integer.parseInt(request.getParameter("idMembre")), Integer.parseInt(request.getParameter("idLivre")), LocalDate.now());
 			
-				response.sendRedirect("emprunt_list");
+				// Get the list of the current loans :
+				List<Loan> loanList = new ArrayList<>();
+				
+				loanList = loanService.getListCurrent();
+				
+				request.setAttribute("loanList", loanList);
+				request.setAttribute("show", "all");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/View/emprunt_list.jsp");
+				dispatcher.forward(request, response);
 			}
-			// request.setAttribute("show", "all");
-			// RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/View/emprunt_list.jsp");
-			// dispatcher.forward(request, response);
 		} catch (ServiceException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();

@@ -1,4 +1,21 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+  pageEncoding="UTF-8"%>
+
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="model.Book" %>
+<%@ page import="service.IBookService" %>
+<%@ page import="service.impl.BookService" %>
+<%@ page import="model.Loan" %>
+<%@ page import="java.util.List" %>
+
+<%! private Book book = new Book();%>
+<%! private IBookService bookService = BookService.getInstance();%>
+<% book = bookService.getById((int) request.getAttribute("id"));%>
+<%! private List<Loan> loanList = new ArrayList<Loan>();%>
+<% loanList = (List) request.getAttribute("loanList");%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,22 +38,22 @@
       </div>
       <div class="row">
       <div class="container">
-      <h5>Détails du livre n°${livre.id}</h5>
+      <h5>Dï¿½tails du livre nï¿½<%= book.getId() %></h5>
         <div class="row">
-	      <form action="/LibraryManager/livre_details?id=idDuLivre" method="post" class="col s12"> <!-- TODO : remplacer idDuLivre par l'id du livre -->
+	      <form action='livre_details?id=<%= book.getId() %>' method="post" class="col s12">
 	        <div class="row">
 	          <div class="input-field col s12">
-	            <input id="titre" type="text" value="titreDuLivre" name="titre"> <!-- TODO : remplacer titreDuLivre par le titre du livre -->
+	            <input id="titre" type="text" value='<%= book.getTitle() %>' name="titre">
 	            <label for="titre">Titre</label>
 	          </div>
 	        </div>
 	        <div class="row">
 	          <div class="input-field col s6">
-	            <input id="auteur" type="text" value="auteurDuLivre" name="auteur"> <!-- TODO : remplacer auteurDuLivre par l'auteur du livre -->
+	            <input id="auteur" type="text" value='<%= book.getAuthor() %>' name="auteur">
 	            <label for="auteur">Auteur</label>
 	          </div>
 	          <div class="input-field col s6">
-	            <input id="isbn" type="text" value="isbnDuLivre" name="isbn"> <!-- TODO : remplacer isbnDuLivre par l'isbn du livre -->
+	            <input id="isbn" type="text" value='<%= book.getIsbn() %>' name="isbn">
 	            <label for="isbn">ISBN 13</label>
 	          </div>
 	        </div>
@@ -46,8 +63,8 @@
 	        </div>
 	      </form>
 	      
-	      <form action="/LibraryManager/livre_delete" method="get" class="col s12">
-	        <input type="hidden" value="idDuLivre" name="id"> <!-- TODO : remplacer idDuLivre par l'id du livre -->
+	      <form action='livre_delete' method="get" class="col s12">
+	        <input type="hidden" value='<%= book.getId() %>' name="id">
 	        <div class="row center">
 	          <button class="btn waves-effect waves-light red" type="submit">Supprimer le livre
 	            <i class="material-icons right">delete</i>
@@ -66,16 +83,17 @@
                 </tr>
               </thead>
               <tbody id="results">
-
-                <tr>
-                  <td>Prénom et nom du membre emprunteur</td>
-                  <td>Date de l'emprunt</td>
-                  <td>
-                    <a href="emprunt_return?id=idDeLEmprunt"><ion-icon class="table-item" name="log-in"></a>
-                  </td>
-                </tr>
-
-				<!-- TODO : parcourir la liste des emprunts en cours pour ce livre et les afficher selon la structure d'exemple ci-dessus -->
+                <% if (!loanList.isEmpty()) {
+                  for (Loan loan : loanList) { %>
+                    <tr>
+                      <td><%= loan.getMember().getFirstName() %> <%= loan.getMember().getLastName() %></td>
+                      <td><%= loan.getLoanDate() %></td>
+                      <td>
+                        <a href='emprunt_return?id=<%= loan.getId() %>'><ion-icon class="table-item" name="log-in"></a>
+                      </td>
+                    </tr>
+                  <% }
+                } %>
               </tbody>
             </table>
           </div>

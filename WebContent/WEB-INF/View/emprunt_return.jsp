@@ -48,9 +48,11 @@
                 <% }
 
                 if (!loanList.isEmpty()) {
-                  for (Loan loan : loanList) { %>
-                    <option value='<%= loan.getId() %>'>"<%= loan.getBook().getTitle() %>", emprunté par <%= loan.getMember().getFirstName() %> <%= loan.getMember().getLastName() %></option>
-                  <% }
+                  for (Loan loan : loanList) {
+                    if (request.getAttribute("id") == null || loan.getId() != (int) request.getAttribute("id")) { %>
+                      <option value='<%= loan.getId() %>'>"<%= loan.getBook().getTitle() %>", emprunté par <%= loan.getMember().getFirstName() %> <%= loan.getMember().getLastName() %></option>
+                    <% }
+                  }
                 } %>
 	            </select>
 	          </div>

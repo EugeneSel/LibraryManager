@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,7 +119,7 @@ public class MemberDao implements IMemberDao {
         int id = -1;
         
         try (Connection connection = EstablishConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_QUERY);
+             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_QUERY, Statement.RETURN_GENERATED_KEYS);
              ResultSet result = prepareCreateStatement(preparedStatement, member);) {
 
             if (result.next()) {

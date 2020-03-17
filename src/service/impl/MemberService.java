@@ -22,7 +22,6 @@ public class MemberService implements IMemberService {
 	
 	@Override
 	public List<Member> getList() throws ServiceException {
-		// TODO Auto-generated method stub
 		IMemberDao membreDao = MemberDao.getInstance();
 		List<Member> membres = new ArrayList<Member>();		
 		try {
@@ -35,7 +34,6 @@ public class MemberService implements IMemberService {
 
 	@Override
 	public List<Member> getListMembreEmpruntPossible() throws ServiceException {		//list pour voir qui eut emprunter un livre
-		// TODO Auto-generated method stub
 		IMemberDao membreDao = MemberDao.getInstance();
 		List<Member> membres = new ArrayList<Member>();	
 		List<Member> membresEmpruntDispo = new ArrayList<Member>();
@@ -55,7 +53,6 @@ public class MemberService implements IMemberService {
 
 	@Override
 	public Member getById(int id) throws ServiceException {
-		// TODO Auto-generated method stub
 		IMemberDao membreDao = MemberDao.getInstance();
 		Member membre = new Member();
 		try {
@@ -68,7 +65,6 @@ public class MemberService implements IMemberService {
 
 	@Override
 	public int create(Member membre) throws ServiceException {
-		// TODO Auto-generated method stub;
 		IMemberDao livreDao = MemberDao.getInstance();
 		int i = -1;
 		if(membre.getFirstName() == null || membre.getFirstName() == "" || membre.getLastName() == null || membre.getLastName() == "") {
@@ -84,15 +80,14 @@ public class MemberService implements IMemberService {
 
 	@Override
 	public void update(Member membre) throws ServiceException {
-		// TODO Auto-generated method stub
 		IMemberDao membreDao = MemberDao.getInstance();
 
-		if (membre.getFirstName() == null ||membre.getFirstName() == "" || membre.getLastName() == null || membre.getLastName() == "") {
+		if (membre.getFirstName() == null || membre.getFirstName() == "" || membre.getLastName() == null || membre.getLastName() == "") {
 			throw new ServiceException("Nom ou Prenom null ou vide");					//return l'exception comme demand
 		}
 		try {
-            membre.setFirstName(membre.getFirstName().toUpperCase());
-            membre.setLastName(membre.getFirstName().toUpperCase());
+            membre.setFirstName(membre.getFirstName());
+            membre.setLastName(membre.getLastName().toUpperCase());
 			membreDao.update(membre);
 		} catch (DaoException e1) {
 			System.out.println(e1.getMessage());			
@@ -101,7 +96,6 @@ public class MemberService implements IMemberService {
 
 	@Override
 	public void delete(int id) throws ServiceException {
-		// TODO Auto-generated method stub
 		IMemberDao membreDao = MemberDao.getInstance();
 		try {
 			membreDao.delete(id);
@@ -112,7 +106,6 @@ public class MemberService implements IMemberService {
 
 	@Override
 	public int count() throws ServiceException {
-		// TODO Auto-generated method stub
 		IMemberDao membreDao = MemberDao.getInstance();
 		int i = -1;
 		try {
@@ -122,5 +115,4 @@ public class MemberService implements IMemberService {
 		}
 		return i;
 	}
-
 }

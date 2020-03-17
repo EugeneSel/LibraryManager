@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,11 +109,11 @@ public class BookDao implements IBookDao {
 
     @Override
 	public int create(Book book) throws DaoException {
-         int id = -1;
+        int id = -1;
         
         try (Connection connection = EstablishConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_QUERY);
-             ResultSet result = prepareCreateStatement(preparedStatement, book);) {
+             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_QUERY, Statement.RETURN_GENERATED_KEYS);
+             ResultSet result = prepareCreateStatement(preparedStatement, book);) { 
 
             if (result.next()) {
                 id = result.getInt(1);

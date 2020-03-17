@@ -1,4 +1,14 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="java.util.List" %>
+<%@ page import="model.Book" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+  pageEncoding="UTF-8"%>
+
+<%! private List<Book> bookList = new ArrayList<>();%>
+<% bookList = (List) request.getAttribute("bookList"); %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,19 +37,21 @@
                         <th>Titre</th>
                         <th>Auteur</th>
                         <th>Code ISBN 13</th>
-                        <th>Détails</th>
+                        <th>Dï¿½tails</th>
                     </tr>
                 </thead>
+
                 <tbody>
-                
-                    <tr>
-                        <td>Titre du livre</td>
-                        <td>Nom de l'auteur</td>
-                        <td>ISBN du livre</td>
-                        <td class="center"><a href="livre_details?id=idDuLivre"><ion-icon class="details" name="information-circle-outline"></ion-icon></a></td>
-                    </tr>
-                    
-                    <!-- TODO : parcourir la liste des livres et les afficher selon la structure d'exemple ci-dessus -->
+                  <% if (!bookList.isEmpty()) {
+                    for (Book book : bookList) { %>
+                      <tr>
+                        <td><%= book.getTitle() %></td>
+                        <td><%= book.getAuthor() %></td>
+                        <td><%= book.getIsbn() %></td>
+                        <td class="center"><a href='livre_details?id=<%= book.getId() %>'><ion-icon class="details" name="information-circle-outline"></ion-icon></a></td>
+                      </tr>
+                    <% }
+                  } %>
                 </tbody>
             </table>
           </div>

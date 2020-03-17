@@ -13,7 +13,6 @@ import model.Loan;
 import model.Member;
 
 public class LoanService implements ILoanService{
-
 	//Singleton
 	private static LoanService instance = new LoanService();
 	private LoanService() { }	
@@ -23,7 +22,6 @@ public class LoanService implements ILoanService{
 	
 	@Override
 	public List<Loan> getList() throws ServiceException {
-		// TODO Auto-generated method stub
 		ILoanDao empruntDao = LoanDao.getInstance();
 		List<Loan> emprunts = new ArrayList<Loan>();
 				
@@ -37,7 +35,6 @@ public class LoanService implements ILoanService{
 
 	@Override
 	public List<Loan> getListCurrent() throws ServiceException {
-		// TODO Auto-generated method stub
 		ILoanDao empruntDao = LoanDao.getInstance();
 		List<Loan> emprunts = new ArrayList<Loan>();
 
@@ -52,7 +49,6 @@ public class LoanService implements ILoanService{
 
 	@Override
 	public List<Loan> getListCurrentByMembre(int idMembre) throws ServiceException {
-		// TODO Auto-generated method stub
 		ILoanDao empruntDao = LoanDao.getInstance();
 		List<Loan> emprunts = new ArrayList<Loan>();		
 		try {
@@ -65,11 +61,10 @@ public class LoanService implements ILoanService{
 
 	@Override
 	public List<Loan> getListCurrentByLivre(int idLivre) throws ServiceException {
-		// TODO Auto-generated method stub
 		ILoanDao empruntDao = LoanDao.getInstance();
 		List<Loan> emprunts = new ArrayList<Loan>();		
 		try {
-			emprunts = empruntDao.getListCurrentByMember(idLivre);
+			emprunts = empruntDao.getListCurrentByBook(idLivre);
 		} catch (DaoException e1) {
 			System.out.println(e1.getMessage());			
 		}
@@ -78,7 +73,6 @@ public class LoanService implements ILoanService{
 
 	@Override
 	public Loan getById(int id) throws ServiceException {
-		// TODO Auto-generated method stub
 		ILoanDao filmDao = LoanDao.getInstance();
 		Loan emprunt = new Loan();
 		try {
@@ -91,7 +85,6 @@ public class LoanService implements ILoanService{
 
 	@Override
 	public void create(int idMembre, int idLivre, LocalDate dateEmprunt) throws ServiceException {
-		// TODO Auto-generated method stub
 		ILoanDao filmDao = LoanDao.getInstance();
 		try {
 			filmDao.create(idMembre, idLivre, dateEmprunt);
@@ -102,8 +95,6 @@ public class LoanService implements ILoanService{
 
 	@Override
 	public void returnBook(int id) throws ServiceException {
-		// TODO Auto-generated method stub
-		// TODO Auto-generated method stub
 		ILoanDao empruntDao = LoanDao.getInstance();
 		try {
 			Loan loan = empruntDao.getById(id);
@@ -114,25 +105,24 @@ public class LoanService implements ILoanService{
 		}  catch (DaoException e1) {
 			System.out.println(e1.getMessage());			
 		}
-
 	}
 
 	@Override
 	public int count() throws ServiceException {
-		// TODO Auto-generated method stub
 		ILoanDao empruntDao = LoanDao.getInstance();
-		int i=-1;
+		int i = -1;
+
 		try {
 			i = empruntDao.count();
 		} catch (DaoException e1) {
 			System.out.println(e1.getMessage());
-			}
+		}
+
 		return i;
 	}
 
 	@Override
 	public boolean isLivreDispo(int idLivre) throws ServiceException {
-		// TODO Auto-generated method stub
 		ILoanDao empruntDao = LoanDao.getInstance();
 		List<Loan> cur = new ArrayList<Loan>();
 		try {
@@ -149,7 +139,6 @@ public class LoanService implements ILoanService{
 
 	@Override
 	public boolean isEmpruntPossible(Member membre) throws ServiceException {
-		// TODO Auto-generated method stub
 		ILoanDao empruntDao = LoanDao.getInstance();
 		List<Loan> cur = new ArrayList<Loan>();
 		try {
@@ -162,7 +151,4 @@ public class LoanService implements ILoanService{
 		}
 		return false;
 	}
-
-
-
 }

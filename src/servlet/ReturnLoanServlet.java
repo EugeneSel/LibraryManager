@@ -24,10 +24,8 @@ public class ReturnLoanServlet extends HttpServlet {
             // Set default value of the "id" option:
             int id = -1;
 			// Change it while receiving an another value:
-			System.out.println(request.getParameter("id"));
             if (request.getParameter("id") != null)
                 id = Integer.parseInt(request.getParameter("id"));
-				System.out.println(id);
 				
 			// Get the list of active loans:
 			ILoanService loanService = LoanService.getInstance();
@@ -59,14 +57,18 @@ public class ReturnLoanServlet extends HttpServlet {
             if (request.getParameter("id") == null)
                 throw se;
             else {
-				System.out.println(request.getParameter("id"));
 				loanService.returnBook(Integer.parseInt(request.getParameter("id")));
 			
-				response.sendRedirect("emprunt_list");
+				// Get the list of the current loans :
+				List<Loan> loanList = new ArrayList<>();
+				
+				loanList = loanService.getListCurrent();
+				
+				request.setAttribute("loanList", loanList);
+				request.setAttribute("show", "all");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/View/emprunt_list.jsp");
+				dispatcher.forward(request, response);
 			}
-			// request.setAttribute("show", "all");
-			// RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/View/emprunt_list.jsp");
-			// dispatcher.forward(request, response);
 		} catch (ServiceException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
