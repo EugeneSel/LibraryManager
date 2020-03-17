@@ -72,11 +72,11 @@ public class Loan {
         this.book = book;
     };
 
-    public void getLoanDate(final LocalDate loanDate) {
+    public void setLoanDate(final LocalDate loanDate) {
         this.loanDate = loanDate;
     };
 
-    public void getReturnDate(final LocalDate returnDate) {
+    public void setReturnDate(final LocalDate returnDate) {
         this.returnDate = returnDate;
     };
 

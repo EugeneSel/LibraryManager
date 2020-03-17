@@ -33,7 +33,7 @@ public class BookDao implements IBookDao {
     private static final String CREATE_QUERY = "INSERT INTO livre(titre, auteur, isbn) VALUES (?, ?, ?);";
 	private static final String UPDATE_QUERY = "UPDATE livre SET titre = ?, auteur = ?, isbn = ? WHERE id = ?";
 	private static final String DELETE_QUERY = "DELETE FROM livre WHERE id=?;";
-    private static final String COUNT_QUERY = "SELECT count(id) AS count FROM livre";
+    private static final String COUNT_QUERY = "SELECT count(*) AS count FROM livre";
     
     
     @Override

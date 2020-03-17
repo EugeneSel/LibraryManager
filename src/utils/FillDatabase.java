@@ -12,7 +12,7 @@ import org.h2.tools.DeleteDbFiles;
 public class FillDatabase {
     public static void main(String[] args) throws Exception {
         try {
-            DeleteDbFiles.execute("~", "libraryManagerDatabase", true);
+            DeleteDbFiles.execute("/media/eugene/Work/JavaProjects/LibraryManager/database", "libraryManagerDatabase", true);
             insertWithPreparedStatement();
         } catch (SQLException e) {
             e.printStackTrace();

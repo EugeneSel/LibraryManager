@@ -1,4 +1,4 @@
-package Service;
+package service;
 
 import model.Member;
 import java.time.LocalDate;
@@ -9,7 +9,7 @@ import java.util.List;
 import exception.ServiceException;
 import model.Loan;
 
-public interface LoanService {
+public interface ILoanService {
 	public List<Loan> getList() throws ServiceException;
 	public List<Loan> getListCurrent() throws ServiceException;
 	public List<Loan> getListCurrentByMembre(int idMembre) throws ServiceException;

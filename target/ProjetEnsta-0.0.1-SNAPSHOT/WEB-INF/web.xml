@@ -5,4 +5,108 @@
     <error-code>500</error-code>
     <location>/WEB-INF/View/error_500.jsp</location>
   </error-page>
+
+  <!-- Dashboard servlet -->
+  <servlet>
+    <servlet-name>DashboardServlet</servlet-name>
+    <servlet-class>servlet.DashboardServlet</servlet-class>    
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DashboardServlet</servlet-name>
+    <url-pattern>/dashboard</url-pattern>
+  </servlet-mapping>
+
+  <!-- All the loan servlets -->
+  <servlet>
+    <servlet-name>AddLoanServlet</servlet-name>
+    <servlet-class>servlet.AddLoanServlet</servlet-class>    
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddLoanServlet</servlet-name>
+    <url-pattern>/emprunt_add</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>LoanListServlet</servlet-name>
+    <servlet-class>servlet.LoanListServlet</servlet-class>    
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LoanListServlet</servlet-name>
+    <url-pattern>/emprunt_list</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>ReturnLoanServlet</servlet-name>
+    <servlet-class>servlet.ReturnLoanServlet</servlet-class>    
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ReturnLoanServlet</servlet-name>
+    <url-pattern>/emprunt_return</url-pattern>
+  </servlet-mapping>
+
+  <!-- All the book servlets -->
+  <servlet>
+    <servlet-name>BookListServlet</servlet-name>
+    <servlet-class>servlet.BookListServlet</servlet-class>    
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BookListServlet</servlet-name>
+    <url-pattern>/livre_list</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>BookDetailsServlet</servlet-name>
+    <servlet-class>servlet.BookDetailsServlet</servlet-class>    
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BookDetailsServlet</servlet-name>
+    <url-pattern>/livre_details</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>AddBookServlet</servlet-name>
+    <servlet-class>servlet.AddBookServlet</servlet-class>    
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddBookServlet</servlet-name>
+    <url-pattern>/livre_add</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>DeleteBookServlet</servlet-name>
+    <servlet-class>servlet.DeleteBookServlet</servlet-class>    
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteBookServlet</servlet-name>
+    <url-pattern>/livre_delete</url-pattern>
+  </servlet-mapping>
+
+  <!-- All the member servlets -->
+  <servlet>
+    <servlet-name>MemberListServlet</servlet-name>
+    <servlet-class>servlet.MemberListServlet</servlet-class>    
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MemberListServlet</servlet-name>
+    <url-pattern>/membre_list</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>MemberDetailsServlet</servlet-name>
+    <servlet-class>servlet.MemberDetailsServlet</servlet-class>    
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MemberDetailsServlet</servlet-name>
+    <url-pattern>/membre_details</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>AddMemberServlet</servlet-name>
+    <servlet-class>servlet.AddMemberServlet</servlet-class>    
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddMemberServlet</servlet-name>
+    <url-pattern>/membre_add</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>DeleteMemberServlet</servlet-name>
+    <servlet-class>servlet.DeleteMemberServlet</servlet-class>    
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteMemberServlet</servlet-name>
+    <url-pattern>/membre_delete</url-pattern>
+  </servlet-mapping>
 </web-app>

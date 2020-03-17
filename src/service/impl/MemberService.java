@@ -1,10 +1,10 @@
-package Service.IMPL;
+package service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import Service.LoanService;
-import Service.MemberService;
+import service.ILoanService;
+import service.IMemberService;
 import dao.IMemberDao;
 import dao.impl.MemberDao;
 import exception.DaoException;
@@ -12,12 +12,11 @@ import exception.ServiceException;
 import model.Member;
 
 
-public class MemberServiceImpl implements MemberService {
-
+public class MemberService implements IMemberService {
 	//Singleton
-	private static MemberServiceImpl instance = new MemberServiceImpl();
-	private MemberServiceImpl() { }	
-	public static MemberService getInstance() {		
+	private static MemberService instance = new MemberService();
+	private MemberService() { }	
+	public static IMemberService getInstance() {		
 		return instance;
 	}
 	
@@ -40,11 +39,11 @@ public class MemberServiceImpl implements MemberService {
 		IMemberDao membreDao = MemberDao.getInstance();
 		List<Member> membres = new ArrayList<Member>();	
 		List<Member> membresEmpruntDispo = new ArrayList<Member>();
-		LoanService emp = LoanServiceImpl.getInstance();
+		ILoanService emp = LoanService.getInstance();
 		try {																			//cycle sur la list
 			membres = membreDao.getList(); 
-			for(int i = 0; i < membres.size(); i++) {
-				if(emp.isEmpruntPossible(membres.get(i))) {
+			for (int i = 0; i < membres.size(); i++) {
+				if (emp.isEmpruntPossible(membres.get(i))) {
 					membresEmpruntDispo.add(membres.get(i));
 				}
 			}
@@ -87,7 +86,8 @@ public class MemberServiceImpl implements MemberService {
 	public void update(Member membre) throws ServiceException {
 		// TODO Auto-generated method stub
 		IMemberDao membreDao = MemberDao.getInstance();
-		if(membre.getFirstName() == null ||membre.getFirstName() == "" || membre.getLastName() == null || membre.getLastName() == "") {
+
+		if (membre.getFirstName() == null ||membre.getFirstName() == "" || membre.getLastName() == null || membre.getLastName() == "") {
 			throw new ServiceException("Nom ou Prenom null ou vide");					//return l'exception comme demand
 		}
 		try {

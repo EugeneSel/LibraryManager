@@ -1,10 +1,10 @@
-package Service.IMPL;
+package service.impl;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import Service.LoanService;
+import service.ILoanService;
 import dao.ILoanDao;
 import dao.impl.LoanDao;
 import exception.DaoException;
@@ -12,12 +12,12 @@ import exception.ServiceException;
 import model.Loan;
 import model.Member;
 
-public class LoanServiceImpl implements LoanService{
+public class LoanService implements ILoanService{
 
 	//Singleton
-	private static LoanServiceImpl instance = new LoanServiceImpl();
-	private LoanServiceImpl() { }	
-	public static LoanService getInstance() {		
+	private static LoanService instance = new LoanService();
+	private LoanService() { }	
+	public static ILoanService getInstance() {		
 		return instance;
 	}
 	
@@ -25,7 +25,8 @@ public class LoanServiceImpl implements LoanService{
 	public List<Loan> getList() throws ServiceException {
 		// TODO Auto-generated method stub
 		ILoanDao empruntDao = LoanDao.getInstance();
-		List<Loan> emprunts = new ArrayList<Loan>();		
+		List<Loan> emprunts = new ArrayList<Loan>();
+				
 		try {
 			emprunts = empruntDao.getList();
 		} catch (DaoException e1) {
@@ -38,12 +39,14 @@ public class LoanServiceImpl implements LoanService{
 	public List<Loan> getListCurrent() throws ServiceException {
 		// TODO Auto-generated method stub
 		ILoanDao empruntDao = LoanDao.getInstance();
-		List<Loan> emprunts = new ArrayList<Loan>();		
+		List<Loan> emprunts = new ArrayList<Loan>();
+
 		try {
 			emprunts = empruntDao.getListCurrent();
 		} catch (DaoException e1) {
 			System.out.println(e1.getMessage());			
 		}
+
 		return emprunts;
 	}
 
@@ -103,8 +106,11 @@ public class LoanServiceImpl implements LoanService{
 		// TODO Auto-generated method stub
 		ILoanDao empruntDao = LoanDao.getInstance();
 		try {
-            empruntDao.update(empruntDao.getById(id));		
-            //update pour fixer la date de retour
+			Loan loan = empruntDao.getById(id);
+			loan.setReturnDate(LocalDate.now());
+
+			// update pour fixer la date de retour:
+			empruntDao.update(loan);
 		}  catch (DaoException e1) {
 			System.out.println(e1.getMessage());			
 		}

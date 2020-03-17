@@ -241,8 +241,11 @@ public class LoanDao implements ILoanDao {
 			preparedStatement.setInt(1, loan.getMember().getId());
             preparedStatement.setInt(2, loan.getBook().getId());
             preparedStatement.setDate(3, Date.valueOf(loan.getLoanDate()));
-            preparedStatement.setDate(4, Date.valueOf(loan.getReturnDate()));
-			preparedStatement.setInt(5, loan.getId());
+            if (loan.getReturnDate() != null)
+                preparedStatement.setDate(4, Date.valueOf(loan.getReturnDate()));
+            else
+                preparedStatement.setDate(4,  null);
+            preparedStatement.setInt(5, loan.getId());
 			preparedStatement.executeUpdate();
 
 			System.out.println("The loan " + loan + " was successfully updated.");

@@ -1,7 +1,0 @@
-0:0:0:0:0:0:0:1 - - [15/Mar/2020:14:31:06 +0100] "GET /ProjetEnsta/ HTTP/1.1" 404 975 http-bio-8080-exec-1 51
-0:0:0:0:0:0:0:1 - - [15/Mar/2020:14:31:06 +0100] "GET /favicon.ico HTTP/1.1" 404 - http-bio-8080-exec-3 0
-0:0:0:0:0:0:0:1 - - [15/Mar/2020:14:31:54 +0100] "GET / HTTP/1.1" 404 - http-bio-8080-exec-4 0
-0:0:0:0:0:0:0:1 - - [15/Mar/2020:14:32:54 +0100] "GET /Desktop/LibraryManager HTTP/1.1" 404 - http-bio-8080-exec-7 0
-0:0:0:0:0:0:0:1 - - [15/Mar/2020:14:32:56 +0100] "GET /Desktop/LibraryManager HTTP/1.1" 404 - http-bio-8080-exec-9 0
-0:0:0:0:0:0:0:1 - - [15/Mar/2020:14:33:01 +0100] "GET /Desktop/LibraryManager/ HTTP/1.1" 404 - http-bio-8080-exec-10 0
-0:0:0:0:0:0:0:1 - - [15/Mar/2020:14:33:35 +0100] "GET /ProjetEnsta/ HTTP/1.1" 404 975 http-bio-8080-exec-10 2

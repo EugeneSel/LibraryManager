@@ -1,4 +1,13 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="java.util.List" %>
+<%@ page import="model.Loan" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+  pageEncoding="UTF-8"%>
+
+<%! private List<Loan> loanList = new ArrayList<>();%>
+<% loanList = (List) request.getAttribute("loanList"); %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,6 +31,7 @@
       <div class="row">
         <div class="container">
 	        <div class="col s12">
+            <a href='emprunt_list?show=<%= (String) request.getAttribute("show") %>'>Show <%= (String) request.getAttribute("show") %> loans</a>
 	          <table class="striped">
                 <thead>
                     <tr>
@@ -32,18 +42,22 @@
                     </tr>
                 </thead>
                 <tbody id="results">
-                
-                    <tr>
-                        <td>Titre du livre, <em>de Nom de l'auteur</em></td>
-                        <td>Prénom et nom du membre emprunteur</td>
-                        <td>Date de l'emprunt</td>
+                  <% if (!loanList.isEmpty()) {
+                    for (Loan loan : loanList) { %>
+                      <tr>
+                        <td><%= loan.getBook().getTitle() %>, <em><%= loan.getBook().getAuthor() %></em></td>
+                        <td><%= loan.getMember().getLastName() %> <%= loan.getMember().getFirstName() %></td>
+                        <td><%= loan.getLoanDate() %></td>
                         <td>
-                            <a href="emprunt_return?id=idDeLEmprunt"><ion-icon class="table-item" name="log-in"></a>
+                          <% if (loan.getReturnDate() == null) { %>
+                            <a href='emprunt_return?id=<%= loan.getId() %>'><ion-icon class="table-item" name="log-in"></a>
+                          <% } else { %>
+                            <%= loan.getReturnDate() %>
+                          <% } %>
                         </td>
-                    </tr>
-
-					 <!-- TODO : parcourir la liste des emprunts en cours et les afficher selon la structure d'exemple ci-dessus -->
-					 <!-- TODO : dans le champ "retour", afficher la date de retour si elle existe, et un lien vers la page de retour si la date est vide (comme dans l'exemple ci-dessus) -->
+                      </tr>
+                    <% }
+                  } %>
                 </tbody>
             </table>
           </div>

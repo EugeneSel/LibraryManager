@@ -1,22 +1,21 @@
-package Service.IMPL;
+package service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import Service.BookService;
-import Service.LoanService;
+import service.IBookService;
+import service.ILoanService;
 import dao.IBookDao;
 import dao.impl.BookDao;
 import exception.DaoException;
 import exception.ServiceException;
 import model.Book;
 
-public class BookServiceImpl implements BookService{
-
+public class BookService implements IBookService {
 	//Singleton
-	private static BookServiceImpl instance = new BookServiceImpl();
-	private BookServiceImpl() { }	
-	public static BookService getInstance() {		
+	private static BookService instance = new BookService();
+	private BookService() { }	
+	public static IBookService getInstance() {		
 		return instance;
 	}
 	
@@ -39,7 +38,7 @@ public class BookServiceImpl implements BookService{
 		IBookDao livreDao = BookDao.getInstance();
         List<Book>    livres = new ArrayList<>();	
 		List<Book> livresDispo = new ArrayList<>();
-		LoanService emp = LoanServiceImpl.getInstance();
+		ILoanService emp = LoanService.getInstance();
 		try {
 			livres = livreDao.getList(); 
 			for(int i = 0; i< livres.size();i++) {
@@ -106,13 +105,14 @@ public class BookServiceImpl implements BookService{
 	public int count() throws ServiceException {
 		// TODO Auto-generated method stub
 		IBookDao livreDao = BookDao.getInstance();
-		int i=-1;
+		int i = -1;
+
 		try {
 			i = livreDao.count();
 		} catch (DaoException e1) {
 			System.out.println(e1.getMessage());
-			}
+		}
+
 		return i;
 	}
-
 }

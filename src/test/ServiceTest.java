@@ -2,12 +2,12 @@ package test;
 
 import java.time.LocalDate;
 
-import Service.BookService;
-import Service.LoanService;
-import Service.MemberService;
-import Service.IMPL.BookServiceImpl;
-import Service.IMPL.LoanServiceImpl;
-import Service.IMPL.MemberServiceImpl;
+import service.IBookService;
+import service.ILoanService;
+import service.IMemberService;
+import service.impl.BookService;
+import service.impl.LoanService;
+import service.impl.MemberService;
 import exception.ServiceException;
 import model.Book;
 import model.Loan;
@@ -26,8 +26,8 @@ public class ServiceTest {
 		Loan emprunt = new Loan(7, m, l, LocalDate.of(2020, 12, 1), LocalDate.now());
 				
 		//init service
-		LoanService empruntService = LoanServiceImpl.getInstance();
-		
+		ILoanService empruntService = LoanService.getInstance();
+
 		//getlist
 		empruntService.getList();
 		System.out.println("\n\n\n\n");
@@ -65,7 +65,7 @@ public class ServiceTest {
 		 * Livre
 		 */
 		
-	    BookService livreservice = BookServiceImpl.getInstance();
+	    IBookService livreservice = BookService.getInstance();
 		
 		//GET
 	    livreservice.getList();
@@ -90,7 +90,7 @@ public class ServiceTest {
 		 * Membre
 		 */
 		
-	    MemberService membreService = MemberServiceImpl.getInstance();
+	    IMemberService membreService = MemberService.getInstance();
 		
 //		GET
 	    membreService.getList();

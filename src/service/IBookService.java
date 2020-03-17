@@ -1,11 +1,11 @@
 
-package Service;
+package service;
 
 import java.util.List;
 
 import exception.ServiceException;
 import model.Book;
-public interface BookService {
+public interface IBookService {
 	public List<Book> getList() throws ServiceException;
 	public List<Book> getListDispo() throws ServiceException;
 	public Book getById(int id) throws ServiceException;
