@@ -38,7 +38,7 @@
       </div>
       <div class="row">
       <div class="container">
-      <h5>D�tails du livre n�<%= book.getId() %></h5>
+      <h5>Détails du livre n:<%= book.getId() %></h5>
         <div class="row">
 	      <form action='livre_details?id=<%= book.getId() %>' method="post" class="col s12">
 	        <div class="row">

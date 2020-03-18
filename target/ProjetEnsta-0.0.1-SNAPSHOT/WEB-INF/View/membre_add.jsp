@@ -35,7 +35,7 @@
 	          </div>
 	          <div class="input-field col s6">
 	            <input id="prenom" type="text" name="prenom">
-	            <label for="prenom">Pr�nom</label>
+	            <label for="prenom">Prénom</label>
 	          </div>
 	        </div>
 	        <div class="row">

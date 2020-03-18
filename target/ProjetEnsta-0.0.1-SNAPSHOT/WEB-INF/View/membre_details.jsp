@@ -38,7 +38,7 @@
       </div>
       <div class="row">
       <div class="container">
-      <h5>Dètails du membre n�<%= member.getId() %></h5>
+      <h5>Dètails du membre n:<%= member.getId() %></h5>
         <div class="row">
 	      <form action='membre_details?id=<%= member.getId() %>' method="post" class="col s12">
 	        <div class="row">
@@ -48,7 +48,7 @@
 	          </div>
 	          <div class="input-field col s4">
 	            <input id="prenom" type="text" value='<%= member.getFirstName() %>' name="prenom">
-	            <label for="prenom">Pr�nom</label>
+	            <label for="prenom">Prénom</label>
 	          </div>
 	          <div class="input-field col s4">
 	            <select name="abonnement" class="browser-default">

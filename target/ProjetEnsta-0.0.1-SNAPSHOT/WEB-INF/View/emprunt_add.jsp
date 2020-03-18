@@ -34,7 +34,7 @@
       </div>
       <div class="row">
       <div class="container">
-        <h5>Sèlectionnez le livre et le membre emprunteur</h5>
+        <h5>Sélectionnez le livre et le membre emprunteur</h5>
         <div class="row">
         <form action="emprunt_add" method="post" class="col s12">
 	        <div class="row">
