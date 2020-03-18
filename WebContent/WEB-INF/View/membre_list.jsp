@@ -35,11 +35,11 @@
             <thead>
               <tr>
                 <th>Nom</th>
-                <th>Pr�nom</th>
+                <th>Prénom</th>
                 <th class="hide-on-small-only">Adresse</th>
                 <th class="hide-on-small-only">E-mail</th>
-                <th class="hide-on-small-only">T�l�phone</th>
-                <th>D�tails</th>
+                <th class="hide-on-small-only">Téléphone</th>
+                <th>Détails</th>
               </tr>
             </thead>
 

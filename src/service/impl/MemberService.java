@@ -14,8 +14,18 @@ import model.Member;
 
 public class MemberService implements IMemberService {
 	//Singleton
+	/**
+	 * 
+	 */
 	private static MemberService instance = new MemberService();
+	/**
+	 * 
+	 */
 	private MemberService() { }	
+	/**
+	 * 
+	 * @return
+	 */
 	public static IMemberService getInstance() {		
 		return instance;
 	}

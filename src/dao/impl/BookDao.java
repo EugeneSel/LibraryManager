@@ -20,7 +20,10 @@ public class BookDao implements IBookDao {
     public static BookDao instance;
 
     private BookDao() {};
-
+    /**
+     * 
+     * @return
+     */
     public static IBookDao getInstance() {
 		if(instance == null) {
 			instance = new BookDao();
@@ -158,7 +161,7 @@ public class BookDao implements IBookDao {
 			throw new DaoException("Error while deleting a book whose id is " + id + " from the database", e);
 		}
     };
-
+    
     @Override
 	public int count() throws DaoException {
     int numberOfBooks = -1;

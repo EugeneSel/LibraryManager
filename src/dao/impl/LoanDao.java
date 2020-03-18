@@ -24,6 +24,7 @@ public class LoanDao implements ILoanDao {
 
     private LoanDao() {};
     
+    
 	public static ILoanDao getInstance() {
 		if(instance == null) {
 			instance = new LoanDao();

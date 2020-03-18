@@ -16,6 +16,7 @@ import service.impl.LoanService;
 import model.Book;
 
 public class AddBookServlet extends HttpServlet {
+	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getServletPath();

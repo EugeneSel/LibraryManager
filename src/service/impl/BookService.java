@@ -13,8 +13,11 @@ import model.Book;
 
 public class BookService implements IBookService {
 	//Singleton
+	
 	private static BookService instance = new BookService();
 	private BookService() { }	
+
+	
 	public static IBookService getInstance() {		
 		return instance;
 	}

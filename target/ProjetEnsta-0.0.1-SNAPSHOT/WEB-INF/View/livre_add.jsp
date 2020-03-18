@@ -25,7 +25,7 @@
       </div>
       <div class="row">
       <div class="container">
-      <h5>Cr�ation d'un nouveau livre</h5>
+      <h5>Crèation d'un nouveau livre</h5>
         <div class="row">
 	      <form action="livre_add" method="post" class="col s12">
 	        <div class="row">
