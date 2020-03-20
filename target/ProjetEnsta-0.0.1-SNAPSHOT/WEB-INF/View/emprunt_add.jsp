@@ -32,9 +32,16 @@
         <a href="#" data-activates="slide-out" class="button-collapse valign hide-on-large-only"><i class="material-icons">menu</i></a>
         <h1 class="page-announce-text valign">Emprunter un livre</h1>
       </div>
+
+      <% if (request.getAttribute("errorMessage") != null) { %>
+        <div>
+          <p><%= (String) request.getAttribute("errorMessage") %></p>
+        </div>
+      <% } %>
+
       <div class="row">
       <div class="container">
-        <h5>S�lectionnez le livre et le membre emprunteur</h5>
+        <h5>Sélectionnez le livre et le membre emprunteur</h5>
         <div class="row">
         <form action="emprunt_add" method="post" class="col s12">
 	        <div class="row">

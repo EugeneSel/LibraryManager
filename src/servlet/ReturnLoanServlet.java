@@ -52,16 +52,15 @@ public class ReturnLoanServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ILoanService loanService = LoanService.getInstance();
         ServletException se = new ServletException("Error. No loan has been chosen.");
-        
+		List<Loan> loanList = new ArrayList<>();
+		
         try {
             if (request.getParameter("id") == null)
                 throw se;
             else {
 				loanService.returnBook(Integer.parseInt(request.getParameter("id")));
 			
-				// Get the list of the current loans :
-				List<Loan> loanList = new ArrayList<>();
-				
+				// Get the list of the current loans :	
 				loanList = loanService.getListCurrent();
 				
 				request.setAttribute("loanList", loanList);
@@ -69,10 +68,23 @@ public class ReturnLoanServlet extends HttpServlet {
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/View/emprunt_list.jsp");
 				dispatcher.forward(request, response);
 			}
-		} catch (ServiceException e) {
+		} catch (ServletException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
-		} catch (ServletException e) {
+
+			// Get the list of the current loans :
+			try {
+				loanList = loanService.getListCurrent();
+			} catch (ServiceException serviceException) {
+				System.out.println(serviceException.getMessage());
+				serviceException.printStackTrace();
+			}
+
+			request.setAttribute("loanList", loanList);
+			request.setAttribute("errorMessage", e.getMessage());
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/View/emprunt_return.jsp");
+			dispatcher.forward(request, response);
+		} catch (ServiceException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}

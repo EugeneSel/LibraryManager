@@ -20,7 +20,10 @@ public class BookDao implements IBookDao {
     public static BookDao instance;
 
     private BookDao() {};
-
+    /**
+     * 
+     * @return
+     */
     public static IBookDao getInstance() {
 		if(instance == null) {
 			instance = new BookDao();
@@ -35,7 +38,6 @@ public class BookDao implements IBookDao {
 	private static final String UPDATE_QUERY = "UPDATE livre SET titre = ?, auteur = ?, isbn = ? WHERE id = ?";
 	private static final String DELETE_QUERY = "DELETE FROM livre WHERE id=?;";
     private static final String COUNT_QUERY = "SELECT count(*) AS count FROM livre";
-    
     
     @Override
 	public List<Book> getList() throws DaoException {
@@ -146,7 +148,6 @@ public class BookDao implements IBookDao {
 
     @Override
 	public void delete(int id) throws DaoException {
-
         try (Connection connection = EstablishConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);) {
             
@@ -158,10 +159,10 @@ public class BookDao implements IBookDao {
 			throw new DaoException("Error while deleting a book whose id is " + id + " from the database", e);
 		}
     };
-
+    
     @Override
 	public int count() throws DaoException {
-    int numberOfBooks = -1;
+        int numberOfBooks = -1;
 
         try (Connection connection = EstablishConnection.getConnection();
 			 PreparedStatement preparedStatement = connection.prepareStatement(COUNT_QUERY);

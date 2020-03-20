@@ -13,8 +13,11 @@ import model.Book;
 
 public class BookService implements IBookService {
 	//Singleton
+	
 	private static BookService instance = new BookService();
 	private BookService() { }	
+
+	
 	public static IBookService getInstance() {		
 		return instance;
 	}
@@ -22,7 +25,8 @@ public class BookService implements IBookService {
 	@Override
 	public List<Book> getList() throws ServiceException {
 		IBookDao livreDao = BookDao.getInstance();
-		List<Book> livres = new ArrayList<>();		
+		List<Book> livres = new ArrayList<>();
+		
 		try {
 			livres = livreDao.getList();
 		} catch (DaoException e1) {
@@ -90,11 +94,16 @@ public class BookService implements IBookService {
 	@Override
 	public void delete(int id) throws ServiceException {
 		IBookDao livreDao = BookDao.getInstance();
+		ILoanService loanService = LoanService.getInstance();
+
 		try {
 			livreDao.delete(id);
+
+			// We are going to return deleted book (delete corresponding loan):
+			loanService.returnBook(id);
 		} catch (DaoException e1) {
 			System.out.println(e1.getMessage());
-			}
+		}
 	}
 
 	@Override

@@ -36,9 +36,16 @@
         <a href="#" data-activates="slide-out" class="button-collapse valign hide-on-large-only"><i class="material-icons">menu</i></a>
         <h1 class="page-announce-text valign">Fiche livre</h1>
       </div>
+
+      <% if (request.getAttribute("errorMessage") != null) { %>
+        <div>
+          <p><%= (String) request.getAttribute("errorMessage") %></p>
+        </div>
+      <% } %>
+
       <div class="row">
       <div class="container">
-      <h5>D�tails du livre n�<%= book.getId() %></h5>
+      <h5>Détails du livre n:<%= book.getId() %></h5>
         <div class="row">
 	      <form action='livre_details?id=<%= book.getId() %>' method="post" class="col s12">
 	        <div class="row">

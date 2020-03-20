@@ -20,7 +20,8 @@ public class MemberDao implements IMemberDao {
     private static MemberDao instance;
 
     private MemberDao() {};
-    	
+    
+    
 	public static IMemberDao getInstance() {
 		if(instance == null) {
 			instance = new MemberDao();

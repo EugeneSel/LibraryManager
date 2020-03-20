@@ -23,9 +23,16 @@
         <a href="#" data-activates="slide-out" class="button-collapse valign hide-on-large-only"><i class="material-icons">menu</i></a>
         <h1 class="page-announce-text valign">Fiche membre</h1>
       </div>
+
+	  <% if (request.getAttribute("errorMessage") != null) { %>
+        <div>
+          <p><%= (String) request.getAttribute("errorMessage") %></p>
+        </div>
+      <% } %>
+
       <div class="row">
       <div class="container">
-      <h5>Cr�ation d'un nouveau membre</h5>
+      <h5>Création d'un nouveau membre</h5>
         <div class="row">
 	      <form action="membre_add" method="post" class="col s12">
 	        <div class="row">
@@ -35,7 +42,7 @@
 	          </div>
 	          <div class="input-field col s6">
 	            <input id="prenom" type="text" name="prenom">
-	            <label for="prenom">Pr�nom</label>
+	            <label for="prenom">Prénom</label>
 	          </div>
 	        </div>
 	        <div class="row">
@@ -51,7 +58,7 @@
 	          </div>
 	          <div class="input-field col s6">
 	            <input id="telephone" type="tel" name="telephone">
-	            <label for="telephone">T�l�phone</label>
+	            <label for="telephone">Téléphone</label>
 	          </div>
 	        </div>
 	        <div class="row center">

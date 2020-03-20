@@ -33,8 +33,8 @@ public class AddMemberServlet extends HttpServlet {
 		ServletException se = new ServletException("Can't add a new member, some data hasn't been received.");
 		
 		try {
-            if (request.getParameter("nom") == null || request.getParameter("prenom") == null || request.getParameter("adresse") == null
-                || request.getParameter("email") == null || request.getParameter("telephone") == null)
+            if (request.getParameter("nom") == "" || request.getParameter("prenom") == "" || request.getParameter("adresse") == ""
+                || request.getParameter("email") == "" || request.getParameter("telephone") == "")
 				throw se;
 			else {
 				int memberId = memberService.create(new Member(request.getParameter("nom"), request.getParameter("prenom"), request.getParameter("adresse"),
@@ -51,6 +51,10 @@ public class AddMemberServlet extends HttpServlet {
 		} catch (ServletException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
+
+			request.setAttribute("errorMessage", e.getMessage());
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/View/membre_add.jsp");
+			dispatcher.forward(request, response);
 		}
 	}
 }

@@ -14,8 +14,18 @@ import model.Member;
 
 public class LoanService implements ILoanService{
 	//Singleton
+	/**
+	 * 
+	 */
 	private static LoanService instance = new LoanService();
+	/**
+	 * 
+	 */
 	private LoanService() { }	
+	/**
+	 * 
+	 * @return
+	 */
 	public static ILoanService getInstance() {		
 		return instance;
 	}

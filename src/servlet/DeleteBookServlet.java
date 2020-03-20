@@ -51,17 +51,16 @@ public class DeleteBookServlet extends HttpServlet {
     @Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		IBookService bookService = BookService.getInstance();
-        ServletException se = new ServletException("Error. No book has been chosen.");
-        
+        ServletException se = new ServletException("Error. No book has been chosen.");		
+		List<Book> bookList = new ArrayList<>();
+		
         try {
-            if (request.getParameter("id") == null)
+            if (request.getParameter("id") == "")
                 throw se;
             else {
 				bookService.delete(Integer.parseInt(request.getParameter("id")));
 			
-				// Get the list of the current Books :
-				List<Book> bookList = new ArrayList<>();
-				
+				// Get the list of the current Books:
 				bookList = bookService.getList();
                 
 				request.setAttribute("bookList", bookList);
@@ -74,6 +73,19 @@ public class DeleteBookServlet extends HttpServlet {
 		} catch (ServletException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
+
+			// Get the list of the current Books:
+			try {
+				bookList = bookService.getList();
+			} catch (ServiceException serviceException) {
+				System.out.println(serviceException.getMessage());
+				serviceException.printStackTrace();
+			}
+                
+			request.setAttribute("bookList", bookList);
+			request.setAttribute("errorMessage", e.getMessage());
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/View/livre_delete.jsp");
+			dispatcher.forward(request, response);
 		}
 	}
 }

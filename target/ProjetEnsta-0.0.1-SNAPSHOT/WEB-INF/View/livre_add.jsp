@@ -23,9 +23,16 @@
         <a href="#" data-activates="slide-out" class="button-collapse valign hide-on-large-only"><i class="material-icons">menu</i></a>
         <h1 class="page-announce-text valign">Fiche livre</h1>
       </div>
+
+      <% if (request.getAttribute("errorMessage") != null) { %>
+        <div>
+          <p><%= (String) request.getAttribute("errorMessage") %></p>
+        </div>
+      <% } %>
+
       <div class="row">
       <div class="container">
-      <h5>Cr�ation d'un nouveau livre</h5>
+      <h5>Création d'un nouveau livre</h5>
         <div class="row">
 	      <form action="livre_add" method="post" class="col s12">
 	        <div class="row">

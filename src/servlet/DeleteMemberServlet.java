@@ -52,16 +52,15 @@ public class DeleteMemberServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		IMemberService memberService = MemberService.getInstance();
         ServletException se = new ServletException("Error. No member has been chosen.");
-        
+		List<Member> memberList = new ArrayList<>();
+		
         try {
-            if (request.getParameter("id") == null)
+            if (request.getParameter("id") == "")
                 throw se;
             else {
 				memberService.delete(Integer.parseInt(request.getParameter("id")));
 			
 				// Get the list of the current members :
-				List<Member> memberList = new ArrayList<>();
-				
 				memberList = memberService.getList();
                 
 				request.setAttribute("memberList", memberList);
@@ -74,6 +73,19 @@ public class DeleteMemberServlet extends HttpServlet {
 		} catch (ServletException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
+
+			// Get the list of the current members:
+			try {
+				memberList = memberService.getList();
+			} catch (ServiceException serviceException) {
+				System.out.println(serviceException.getMessage());
+				serviceException.printStackTrace();
+			}
+                
+			request.setAttribute("memberList", memberList);
+			request.setAttribute("errorMessage", e.getMessage());
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/View/membre_delete.jsp");
+			dispatcher.forward(request, response);
 		}
 	}
 }

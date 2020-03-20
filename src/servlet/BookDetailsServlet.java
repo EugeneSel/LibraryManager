@@ -59,7 +59,7 @@ public class BookDetailsServlet extends HttpServlet {
 		ServletException se = new ServletException("Can't update a book, some data hasn't been received.");
 		
 		try {
-			if (request.getParameter("titre") == null || request.getParameter("auteur") == null || request.getParameter("isbn") == null)
+			if (request.getParameter("titre") == "" || request.getParameter("auteur") == "" || request.getParameter("isbn") == "")
 				throw se;
 			else {
                 bookService.update(new Book(Integer.parseInt(request.getParameter("id")), request.getParameter("titre"), request.getParameter("auteur"), request.getParameter("isbn")));
@@ -74,6 +74,18 @@ public class BookDetailsServlet extends HttpServlet {
 		} catch (ServletException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
+
+			try {
+				request.setAttribute("loanList", loanService.getListCurrentByLivre(Integer.parseInt(request.getParameter("id"))));
+			} catch (ServiceException serviceException) {
+				System.out.println(serviceException.getMessage());
+				serviceException.printStackTrace();
+			}
+			
+			request.setAttribute("id", Integer.parseInt(request.getParameter("id")));
+			request.setAttribute("errorMessage", e.getMessage());
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/View/livre_details.jsp");
+			dispatcher.forward(request, response);
 		}
 	}
 }

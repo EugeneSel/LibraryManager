@@ -5,17 +5,30 @@ import java.util.List;
 
 import service.ILoanService;
 import service.IMemberService;
+import dao.ILoanDao;
 import dao.IMemberDao;
+import dao.impl.LoanDao;
 import dao.impl.MemberDao;
 import exception.DaoException;
 import exception.ServiceException;
+import model.Loan;
 import model.Member;
 
 
 public class MemberService implements IMemberService {
 	//Singleton
+	/**
+	 * 
+	 */
 	private static MemberService instance = new MemberService();
+	/**
+	 * 
+	 */
 	private MemberService() { }	
+	/**
+	 * 
+	 * @return
+	 */
 	public static IMemberService getInstance() {		
 		return instance;
 	}
@@ -97,8 +110,15 @@ public class MemberService implements IMemberService {
 	@Override
 	public void delete(int id) throws ServiceException {
 		IMemberDao membreDao = MemberDao.getInstance();
+		ILoanService loanService = LoanService.getInstance();
+
 		try {
 			membreDao.delete(id);
+
+			// We are going to return the books of deleted member:
+			List<Loan> loanList = loanService.getListCurrentByMembre(id);
+			for (Loan loan : loanList)
+				loanService.returnBook(loan.getBook().getId());
 		} catch (DaoException e1) {
 			System.out.println(e1.getMessage());			
 		}

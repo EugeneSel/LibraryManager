@@ -29,9 +29,16 @@
         <a href="#" data-activates="slide-out" class="button-collapse valign hide-on-large-only"><i class="material-icons">menu</i></a>
         <h1 class="page-announce-text valign">Retour d'un livre</h1>
       </div>
+
+      <% if (request.getAttribute("errorMessage") != null) { %>
+        <div>
+          <p><%= (String) request.getAttribute("errorMessage") %></p>
+        </div>
+      <% } %>
+
       <div class="row">
       <div class="container">
-        <h5>S�lectionnez le livre � retourner</h5>
+        <h5>Sélectionnez le livre à retourner</h5>
         <div class="row">
 	      <form action="emprunt_return" method="post" class="col s12">
 	        <div class="row">

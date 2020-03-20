@@ -59,8 +59,8 @@ public class MemberDetailsServlet extends HttpServlet {
 		ServletException se = new ServletException("Can't update a member, some data hasn't been received.");
 		
 		try {
-			if (request.getParameter("nom") == null || request.getParameter("prenom") == null || request.getParameter("adresse") == null
-                || request.getParameter("email") == null || request.getParameter("telephone") == null || request.getParameter("abonnement") == null)
+			if (request.getParameter("nom") == "" || request.getParameter("prenom") == "" || request.getParameter("adresse") == ""
+                || request.getParameter("email") == "" || request.getParameter("telephone") == "" || request.getParameter("abonnement") == "")
 				throw se;
 			else {
                 memberService.update(new Member(Integer.parseInt(request.getParameter("id")), request.getParameter("nom"), request.getParameter("prenom"), request.getParameter("adresse"),
@@ -76,6 +76,18 @@ public class MemberDetailsServlet extends HttpServlet {
 		} catch (ServletException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
+
+			try {
+				request.setAttribute("loanList", loanService.getListCurrentByMembre(Integer.parseInt(request.getParameter("id"))));
+			} catch (ServiceException serviceException) {
+				System.out.println(serviceException.getMessage());
+				serviceException.printStackTrace();
+			}
+			
+			request.setAttribute("id", Integer.parseInt(request.getParameter("id")));
+			request.setAttribute("errorMessage", e.getMessage());
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/View/membre_details.jsp");
+			dispatcher.forward(request, response);
 		}
 	}
 }

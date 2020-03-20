@@ -64,7 +64,8 @@ public class AddLoanServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ILoanService loanService = LoanService.getInstance();
 		ServletException se = new ServletException("Can't add a new loan, some data hasn't been received.");
-		
+		List<Loan> loanList = new ArrayList<>();
+
 		try {
 			if (request.getParameter("idMembre") == null || request.getParameter("idLivre") == null)
 				throw se;
@@ -72,8 +73,6 @@ public class AddLoanServlet extends HttpServlet {
 				loanService.create(Integer.parseInt(request.getParameter("idMembre")), Integer.parseInt(request.getParameter("idLivre")), LocalDate.now());
 			
 				// Get the list of the current loans :
-				List<Loan> loanList = new ArrayList<>();
-				
 				loanList = loanService.getListCurrent();
 				
 				request.setAttribute("loanList", loanList);
@@ -87,6 +86,34 @@ public class AddLoanServlet extends HttpServlet {
 		} catch (ServletException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
+			// Get the list of members who could make a loan:
+			IMemberService memberService = MemberService.getInstance();
+			List<Member> availableMemberList = new ArrayList<>();
+			
+			try {
+				availableMemberList = memberService.getListMembreEmpruntPossible();
+			} catch (ServiceException serviceException) {
+				System.out.println(serviceException.getMessage());
+				serviceException.printStackTrace();
+			}
+			
+			request.setAttribute("availableMemberList", availableMemberList);
+
+			// Get the list of books whick wasn't loaned yet:
+			IBookService bookService = BookService.getInstance();
+			List<Book> availableBookList = new ArrayList<>();
+			
+			try {
+				availableBookList = bookService.getListDispo();
+			} catch (ServiceException serviceException) {
+				System.out.println(serviceException.getMessage());
+				serviceException.printStackTrace();
+			}
+			
+			request.setAttribute("availableBookList", availableBookList);
+			request.setAttribute("errorMessage", e.getMessage());
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/View/emprunt_add.jsp");
+			dispatcher.forward(request, response);
 		}
 	}
 }
