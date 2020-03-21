@@ -39,7 +39,7 @@
 
       <% if (request.getAttribute("errorMessage") != null) { %>
         <div>
-          <p><%= (String) request.getAttribute("errorMessage") %></p>
+          <p align="center"><%= (String) request.getAttribute("errorMessage") %></p>
         </div>
       <% } %>
 

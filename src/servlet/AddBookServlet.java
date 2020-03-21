@@ -30,29 +30,24 @@ public class AddBookServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		IBookService bookService = BookService.getInstance();
 		ILoanService loanService = LoanService.getInstance();	
-		ServletException se = new ServletException("Can't add a new book, some data hasn't been received.");
 		
 		try {
-			if (request.getParameter("titre") == "" || request.getParameter("auteur") == "" || request.getParameter("isbn") == "")
-				throw se;
-			else {
-				int bookId = bookService.create(new Book(request.getParameter("titre"), request.getParameter("auteur"), request.getParameter("isbn")));
+			int bookId = bookService.create(new Book(request.getParameter("titre"), request.getParameter("auteur"), request.getParameter("isbn")));
 
-				request.setAttribute("id", bookId);
-				request.setAttribute("loanList", loanService.getListCurrentByLivre(bookId));
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/View/livre_details.jsp");
-				dispatcher.forward(request, response);
-            }
+			request.setAttribute("id", bookId);
+			request.setAttribute("loanList", loanService.getListCurrentByLivre(bookId));
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/View/livre_details.jsp");
+			dispatcher.forward(request, response);
 		} catch (ServiceException e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-		} catch (ServletException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 
 			request.setAttribute("errorMessage", e.getMessage());
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/View/livre_add.jsp");
 			dispatcher.forward(request, response);
+		} catch (ServletException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 }

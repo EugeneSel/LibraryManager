@@ -1,9 +1,8 @@
 package model;
 
 public class Member {
-    
     public enum SubscriptionType {
-        BASIC(0), PREMIUM(1), VIP(0);
+        BASIC(0), PREMIUM(1), VIP(2);
         private int index;
         /**
          * 
@@ -24,8 +23,6 @@ public class Member {
          * @param index index to change to
          */
         public void setIndex(int index) { this.index = index; }
-
-		
     }
 
     //private static int autoincrement = 0;

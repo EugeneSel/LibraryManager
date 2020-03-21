@@ -56,24 +56,15 @@ public class MemberDetailsServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		IMemberService memberService = MemberService.getInstance();
 		ILoanService loanService = LoanService.getInstance();
-		ServletException se = new ServletException("Can't update a member, some data hasn't been received.");
 		
 		try {
-			if (request.getParameter("nom") == "" || request.getParameter("prenom") == "" || request.getParameter("adresse") == ""
-                || request.getParameter("email") == "" || request.getParameter("telephone") == "" || request.getParameter("abonnement") == "")
-				throw se;
-			else {
-                memberService.update(new Member(Integer.parseInt(request.getParameter("id")), request.getParameter("nom"), request.getParameter("prenom"), request.getParameter("adresse"),
-                                                                request.getParameter("email"), request.getParameter("telephone"), Member.SubscriptionType.valueOf(request.getParameter("abonnement"))));
-				request.setAttribute("loanList", loanService.getListCurrentByMembre(Integer.parseInt(request.getParameter("id"))));
-				request.setAttribute("id", Integer.parseInt(request.getParameter("id")));
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/View/membre_details.jsp");
-				dispatcher.forward(request, response);
-            }
+			memberService.update(new Member(Integer.parseInt(request.getParameter("id")), request.getParameter("nom"), request.getParameter("prenom"), request.getParameter("adresse"),
+															request.getParameter("email"), request.getParameter("telephone"), Member.SubscriptionType.valueOf(request.getParameter("abonnement"))));
+			request.setAttribute("loanList", loanService.getListCurrentByMembre(Integer.parseInt(request.getParameter("id"))));
+			request.setAttribute("id", Integer.parseInt(request.getParameter("id")));
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/View/membre_details.jsp");
+			dispatcher.forward(request, response);
 		} catch (ServiceException e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-		} catch (ServletException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 
@@ -88,6 +79,9 @@ public class MemberDetailsServlet extends HttpServlet {
 			request.setAttribute("errorMessage", e.getMessage());
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/View/membre_details.jsp");
 			dispatcher.forward(request, response);
+		} catch (ServletException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 }

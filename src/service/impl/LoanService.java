@@ -83,10 +83,10 @@ public class LoanService implements ILoanService{
 
 	@Override
 	public Loan getById(int id) throws ServiceException {
-		ILoanDao filmDao = LoanDao.getInstance();
+		ILoanDao loanDao = LoanDao.getInstance();
 		Loan emprunt = new Loan();
 		try {
-			emprunt = filmDao.getById(id);
+			emprunt = loanDao.getById(id);
 		} catch (DaoException e1) {
 			System.out.println(e1.getMessage());			
 		}
@@ -95,9 +95,10 @@ public class LoanService implements ILoanService{
 
 	@Override
 	public void create(int idMembre, int idLivre, LocalDate dateEmprunt) throws ServiceException {
-		ILoanDao filmDao = LoanDao.getInstance();
+		ILoanDao loanDao = LoanDao.getInstance();
+
 		try {
-			filmDao.create(idMembre, idLivre, dateEmprunt);
+			loanDao.create(idMembre, idLivre, dateEmprunt);
 		}  catch (DaoException e1) {
 			System.out.println(e1.getMessage());			
 		}
@@ -135,14 +136,15 @@ public class LoanService implements ILoanService{
 	public boolean isLivreDispo(int idLivre) throws ServiceException {
 		ILoanDao empruntDao = LoanDao.getInstance();
 		List<Loan> cur = new ArrayList<Loan>();
+
 		try {
-			 cur = empruntDao.getListCurrentByBook(idLivre);
-             return cur.isEmpty();							
-             //je fais un retour pour voir si le livre n'est pas dans la liste des livres emprunts
-				
+			cur = empruntDao.getListCurrentByBook(idLivre);
+			return cur.isEmpty();		
+			//je fais un retour pour voir si le livre n'est pas dans la liste des livres emprunts
 		}  catch (DaoException e1) {
 			System.out.println(e1.getMessage());			
 		}
+
 		return false;
 	}
 
@@ -151,14 +153,15 @@ public class LoanService implements ILoanService{
 	public boolean isEmpruntPossible(Member membre) throws ServiceException {
 		ILoanDao empruntDao = LoanDao.getInstance();
 		List<Loan> cur = new ArrayList<Loan>();
+		
 		try {
-			 cur = empruntDao.getListCurrentByMember(membre.getId());
-             return cur.size() < membre.getSubscription().getIndex();		
-             //je vais voir si la personne peut obtenir un livre
-				
+			cur = empruntDao.getListCurrentByMember(membre.getId());
+			return cur.size() < membre.getSubscription().getIndex() + 1;		
+			// je vais voir si la personne peut obtenir un livre
 		}  catch (DaoException e1) {
-			System.out.println(e1.getMessage());			
+			System.out.println(e1.getMessage());
 		}
+
 		return false;
 	}
 }

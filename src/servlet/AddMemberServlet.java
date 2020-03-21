@@ -30,31 +30,25 @@ public class AddMemberServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		IMemberService memberService = MemberService.getInstance();
 		ILoanService loanService = LoanService.getInstance();
-		ServletException se = new ServletException("Can't add a new member, some data hasn't been received.");
 		
 		try {
-            if (request.getParameter("nom") == "" || request.getParameter("prenom") == "" || request.getParameter("adresse") == ""
-                || request.getParameter("email") == "" || request.getParameter("telephone") == "")
-				throw se;
-			else {
-				int memberId = memberService.create(new Member(request.getParameter("nom"), request.getParameter("prenom"), request.getParameter("adresse"),
-																request.getParameter("email"), request.getParameter("telephone"), Member.SubscriptionType.BASIC));
+			int memberId = memberService.create(new Member(request.getParameter("nom"), request.getParameter("prenom"), request.getParameter("adresse"),
+															request.getParameter("email"), request.getParameter("telephone"), Member.SubscriptionType.BASIC));
 
-				request.setAttribute("id", memberId);
-				request.setAttribute("loanList", loanService.getListCurrentByMembre(memberId));
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/View/membre_details.jsp");
-				dispatcher.forward(request, response);
-            }
+			request.setAttribute("id", memberId);
+			request.setAttribute("loanList", loanService.getListCurrentByMembre(memberId));
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/View/membre_details.jsp");
+			dispatcher.forward(request, response);
 		} catch (ServiceException e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-		} catch (ServletException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 
 			request.setAttribute("errorMessage", e.getMessage());
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/View/membre_add.jsp");
 			dispatcher.forward(request, response);
+		} catch (ServletException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 }

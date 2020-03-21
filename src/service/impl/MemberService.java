@@ -78,17 +78,20 @@ public class MemberService implements IMemberService {
 
 	@Override
 	public int create(Member membre) throws ServiceException {
-		IMemberDao livreDao = MemberDao.getInstance();
-		int i = -1;
+		IMemberDao membreDao = MemberDao.getInstance();
+		int id = -1;
+
 		if(membre.getFirstName() == null || membre.getFirstName() == "" || membre.getLastName() == null || membre.getLastName() == "") {
-			throw new ServiceException("Nom ou Prenom null ou vide");					//return l'exception comme demand
+			throw new ServiceException("Can't add a new member, some data hasn't been received (First name or Last name).");
 		}
+
 		try {
-			i = livreDao.create(membre);
+			membre.setLastName(membre.getLastName().toUpperCase());
+			id = membreDao.create(membre);
 		}  catch (DaoException e1) {
 			System.out.println(e1.getMessage());			
 		} 
-		return i;
+		return id;
 	}
 
 	@Override
@@ -96,10 +99,10 @@ public class MemberService implements IMemberService {
 		IMemberDao membreDao = MemberDao.getInstance();
 
 		if (membre.getFirstName() == null || membre.getFirstName() == "" || membre.getLastName() == null || membre.getLastName() == "") {
-			throw new ServiceException("Nom ou Prenom null ou vide");					//return l'exception comme demand
+			throw new ServiceException("Can't update a member, some data hasn't been received (First name or Last name).");
 		}
+
 		try {
-            membre.setFirstName(membre.getFirstName());
             membre.setLastName(membre.getLastName().toUpperCase());
 			membreDao.update(membre);
 		} catch (DaoException e1) {

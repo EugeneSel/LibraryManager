@@ -70,25 +70,34 @@ public class BookService implements IBookService {
 	@Override
 	public int create(Book livre) throws ServiceException {
 		IBookDao livreDao = BookDao.getInstance();
-		int i = -1;
+		int id = -1;
 		
+		if (livre.getTitle() == null || livre.getAuthor() == null || livre.getIsbn() == null ||
+			livre.getTitle() == "" || livre.getAuthor() == "" || livre.getIsbn() == "")
+			throw new ServiceException("Can't add a new book, some data hasn't been received.");
+
 		try {
-			i = livreDao.create(livre);
+			id = livreDao.create(livre);
 		}  catch (DaoException e1) {
-			System.out.println(e1.getMessage());			
+			System.out.println(e1.getMessage());		
 		}
 
-		return i;
+		return id;
 	}
 
 	@Override
 	public void update(Book livre) throws ServiceException {
 		IBookDao livreDao = BookDao.getInstance();
+
+		if (livre.getTitle() == null || livre.getAuthor() == null || livre.getIsbn() == null ||
+			livre.getTitle() == "" || livre.getAuthor() == "" || livre.getIsbn() == "")
+			throw new ServiceException("Can't update a book, some data hasn't been received.");
+
 		try {
 			livreDao.update(livre);
 		} catch (DaoException e1) {
 			System.out.println(e1.getMessage());
-			}
+		}
 	}
 
 	@Override
