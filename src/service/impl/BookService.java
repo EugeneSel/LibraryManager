@@ -103,13 +103,9 @@ public class BookService implements IBookService {
 	@Override
 	public void delete(int id) throws ServiceException {
 		IBookDao livreDao = BookDao.getInstance();
-		ILoanService loanService = LoanService.getInstance();
 
 		try {
 			livreDao.delete(id);
-
-			// We are going to return deleted book (delete corresponding loan):
-			loanService.returnBook(id);
 		} catch (DaoException e1) {
 			System.out.println(e1.getMessage());
 		}

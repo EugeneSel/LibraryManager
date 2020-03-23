@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import exception.ServiceException;
 import service.IBookService;
+import service.ILoanService;
 import service.impl.BookService;
+import service.impl.LoanService;
 import model.Book;
 
 public class DeleteBookServlet extends HttpServlet {
@@ -51,13 +53,16 @@ public class DeleteBookServlet extends HttpServlet {
     @Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		IBookService bookService = BookService.getInstance();
-        ServletException se = new ServletException("Error. No book has been chosen.");		
+		ILoanService loanService = LoanService.getInstance();	
 		List<Book> bookList = new ArrayList<>();
 		
         try {
             if (request.getParameter("id") == "")
-                throw se;
-            else {
+				throw new ServletException("Error. No book has been chosen.");	
+			// We are going to check the loans of a chosen book:
+			else if (!loanService.getListCurrentByLivre(Integer.parseInt(request.getParameter("id"))).isEmpty()) {
+				throw new ServletException("Error. Can't delete a loaned book.");
+            } else {
 				bookService.delete(Integer.parseInt(request.getParameter("id")));
 			
 				// Get the list of the current Books:

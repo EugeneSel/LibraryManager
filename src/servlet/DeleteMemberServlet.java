@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import exception.ServiceException;
+import service.ILoanService;
 import service.IMemberService;
+import service.impl.LoanService;
 import service.impl.MemberService;
 import model.Member;
 
@@ -51,13 +53,16 @@ public class DeleteMemberServlet extends HttpServlet {
     @Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		IMemberService memberService = MemberService.getInstance();
-        ServletException se = new ServletException("Error. No member has been chosen.");
+		ILoanService loanService = LoanService.getInstance();
 		List<Member> memberList = new ArrayList<>();
-		
+
         try {
             if (request.getParameter("id") == "")
-                throw se;
-            else {
+				throw new ServletException("Error. No member has been chosen.");
+			// We are going to check the loans of a chosen member:
+			else if (!loanService.getListCurrentByMembre(Integer.parseInt(request.getParameter("id"))).isEmpty()) {
+				throw new ServletException("Error. Can't delete a member who doesn't return some books yet.");
+			} else {
 				memberService.delete(Integer.parseInt(request.getParameter("id")));
 			
 				// Get the list of the current members :

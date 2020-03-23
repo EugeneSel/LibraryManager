@@ -113,15 +113,9 @@ public class MemberService implements IMemberService {
 	@Override
 	public void delete(int id) throws ServiceException {
 		IMemberDao membreDao = MemberDao.getInstance();
-		ILoanService loanService = LoanService.getInstance();
 
 		try {
 			membreDao.delete(id);
-
-			// We are going to return the books of deleted member:
-			List<Loan> loanList = loanService.getListCurrentByMembre(id);
-			for (Loan loan : loanList)
-				loanService.returnBook(loan.getBook().getId());
 		} catch (DaoException e1) {
 			System.out.println(e1.getMessage());			
 		}
