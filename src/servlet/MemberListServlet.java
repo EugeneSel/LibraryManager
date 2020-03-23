@@ -20,7 +20,7 @@ public class MemberListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getServletPath();
 		
-		if (action == "/membre_list") {
+		if (action.equals("/membre_list")) {
 			// Get the list of members:
 			IMemberService memberService = MemberService.getInstance();
 			List<Member> memberList = new ArrayList<>();

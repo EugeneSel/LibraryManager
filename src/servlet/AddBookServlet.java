@@ -20,7 +20,7 @@ public class AddBookServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getServletPath();
 		
-		if (action == "/livre_add") {
+		if (action.equals("/livre_add")) {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/View/livre_add.jsp");
 			dispatcher.forward(request, response);
 		}

@@ -24,7 +24,7 @@ public class DashboardServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getServletPath();
 		
-		if (action == "/dashboard") {
+		if (action.equals("/dashboard")) {
 			// Get the number of members:
 			IMemberService memberService = MemberService.getInstance();
 			int numberOfMembers = -1;

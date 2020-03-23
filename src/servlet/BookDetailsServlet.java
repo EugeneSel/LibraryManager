@@ -23,7 +23,7 @@ public class BookDetailsServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getServletPath();
 		
-		if (action == "/livre_details") {
+		if (action.equals("/livre_details")) {
             // Set default value of the "id" option:
             int id = -1;
 			// Change it while receiving an another value:

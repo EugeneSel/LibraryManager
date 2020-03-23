@@ -20,7 +20,7 @@ public class AddMemberServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getServletPath();
 		
-		if (action == "/membre_add") {
+		if (action.equals("/membre_add")) {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/View/membre_add.jsp");
 			dispatcher.forward(request, response);
 		}

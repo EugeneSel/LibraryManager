@@ -20,7 +20,7 @@ public class DeleteMemberServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getServletPath();
 		
-		if (action == "/membre_delete") {
+		if (action.equals("/membre_delete")) {
             // Set default value of the "id" option:
             int id = -1;
 			// Change it while receiving an another value:

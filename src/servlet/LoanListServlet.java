@@ -20,7 +20,7 @@ public class LoanListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getServletPath();
 		
-		if (action == "/emprunt_list") {
+		if (action.equals("/emprunt_list")) {
             // Set default value of the "show" option:
             String show = "current";
             // Change it while receiving an another value:

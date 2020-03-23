@@ -27,7 +27,7 @@ public class AddLoanServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getServletPath();
 		
-		if (action == "/emprunt_add") {
+		if (action.equals("/emprunt_add")) {
 			// Get the list of members who could make a loan:
 			IMemberService memberService = MemberService.getInstance();
 			List<Member> availableMemberList = new ArrayList<>();

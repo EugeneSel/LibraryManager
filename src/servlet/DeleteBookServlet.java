@@ -20,7 +20,7 @@ public class DeleteBookServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getServletPath();
 		
-		if (action == "/livre_delete") {
+		if (action.equals("/livre_delete")) {
             // Set default value of the "id" option:
             int id = -1;
 			// Change it while receiving an another value:

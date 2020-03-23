@@ -20,7 +20,7 @@ public class BookListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getServletPath();
 		
-		if (action == "/livre_list") {
+		if (action.equals("/livre_list")) {
 			// Get the list of books:
 			IBookService bookService = BookService.getInstance();
 			List<Book> bookList = new ArrayList<>();
